@@ -19,6 +19,10 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('forgot', 'reset'),
+                'users' => array('*'),
+            ),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('index', 'create', 'update', 'search', 'sendemail', 'view', 'delete'),
                 'users' => array('@'),
             ),
@@ -156,6 +160,85 @@ class UserController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+
+    public function actionForgot() {
+        $this->layout = '//layouts/login';
+        if (!Yii::app()->user->isGuest)
+            $this->redirect(array('/site/default/index'));
+
+        $model = new LoginForm('forgotpass');
+        $this->performAjaxValidation($model);
+        if (isset($_POST['forgot'])) {
+            $user = User::model()->findByAttributes(array('email' => $_POST['LoginForm']['email']));
+            if (empty($user)) {
+                Yii::app()->user->setFlash('danger', 'This Email Address Not Exists!!!');
+                $this->refresh();
+            }else{
+                $reset_link = Myclass::getRandomString(25);
+                $user->setAttribute('password_reset_token', $reset_link);
+                $user->setAttribute('updated_at', strtotime(date('Y-m-d H:i:s')));
+                $user->save(false);
+
+                ///////////////////////
+                $time_valid = date('Y-m-d H:i:s');
+                $resetlink = Yii::app()->createAbsoluteUrl('/site/user/reset?str=' . $user->password_reset_token . '&id=' . $user->id);
+                if (!empty($user->email)):
+                    //$loginlink = Yii::app()->createAbsoluteUrl('/site/default/login');
+                    $mail = new Sendmail;
+                    $trans_array = array(
+                        "{SITENAME}" => SITENAME,
+                        "{USERNAME}" => $user->username,
+                        "{EMAIL_ID}" => $user->email,
+                        "{NEXTSTEPURL}" => $resetlink,
+                        "{TIMEVALID}" => $time_valid,
+                    );
+                    $message = $mail->getMessage('forgot_password', $trans_array);
+                    $Subject = $mail->translate('{SITENAME}: Reset Password');
+                    $mail->send($user->email, $Subject, $message);
+                endif;
+
+                Yii::app()->user->setFlash('success', "Your Password Reset Link sent to your email address.");
+                $this->redirect(array('/site/default/login'));
+            }
+        }
+
+        $this->render('forgot', array('model' => $model));
+    }
+    
+    public function actionReset($str, $id) {
+        $this->layout = '//layouts/login';
+        if (!Yii::app()->user->isGuest)
+            $this->redirect(array('/site/default/index'));
+
+        $model = $this->loadModel($id);
+        if (empty($model) || $model->password_reset_token != $str) {
+            Yii::app()->user->setFlash('danger', "Not a valid Reset Link");
+            $this->redirect(array('/site/default/login'));
+        } else {
+            $start = strtotime(date('Y-m-d H:i:s', $model->updated_at));
+            $end = strtotime(date('Y-m-d H:i:s'));
+            $seconds = $end - $start;
+            $days    = floor($seconds / 86400);
+            $hours   = floor(($seconds - ($days * 86400)) / 3600);
+            $minutes = floor(($seconds - ($days * 86400) - ($hours * 3600))/60);
+
+            if ($minutes > 5) {
+                Yii::app()->user->setFlash('danger', "This Reset Link Expired. Please Try again.");
+                $this->redirect(array('/site/user/forgot'));
+            }
+        }
+
+        $model->setScenario('reset');
+        $this->performAjaxValidation($model);
+        if (isset($_POST['reset'])) {
+            $model->setAttribute('password_hash', Myclass::encrypt($_POST['User']['new_password']));
+            $model->setAttribute('password_reset_token', '');
+            $model->save(false);
+            Yii::app()->user->setFlash('success', "Your Password Changed Successfully.");
+            $this->redirect(array('/site/default/login'));
+        }
+        $this->render('reset', array('model' => $model));
     }
 
 }

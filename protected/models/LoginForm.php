@@ -7,6 +7,7 @@
  */
 class LoginForm extends CFormModel {
 
+    public $email;
     public $username;
     public $password;
     public $rememberMe = 0;
@@ -21,6 +22,8 @@ class LoginForm extends CFormModel {
         return array(
             // username and password are required
             array('username, password', 'required'),
+            array('email', 'required', 'on' => 'forgotpass'),
+            array('email', 'email'),
             //array('admin_username', 'email'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),

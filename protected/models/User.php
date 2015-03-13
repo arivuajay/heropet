@@ -43,10 +43,13 @@ class User extends CActiveRecord {
         return array(
             array('username, name, email', 'required', 'on' => 'create,update'),
             array('username,email', 'unique'),
+            array('email', 'email'),
             array('email', 'required', 'on' => 'forgotpassword'),
             array('confirm_password', 'compare', 'compareAttribute' => 'new_password', 'on' => 'update'),
             array('role, status, created_at, updated_at', 'numerical', 'integerOnly' => true),
             array('username, name, password_hash, password_reset_token, email,new_password', 'length', 'max' => 255),
+            array('new_password', 'compare', 'compareAttribute' => 'confirm_password', 'on' => 'reset'),
+            array('new_password, confirm_password', 'required', 'on' => 'reset'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, username, name, password_hash, password_reset_token, email, role, status, created_at, updated_at,confirm_password,new_password', 'safe', 'on' => 'search'),
