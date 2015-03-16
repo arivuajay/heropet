@@ -31,17 +31,12 @@
             'activateItems' => true,
             'items' => array(
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Dashboard</span>', 'url' => Yii::app()->homeUrl),
-                array('label' => '<i class="fa fa-th"></i> <span>Document Activities</span>', 'url' => '#'),
-                array('label' => '<i class="fa fa-laptop"></i> <span>Distribution Activities</span>', 'url' => '#'),
-                array('label' => '<i class="fa fa-th"></i> <span>International Databases</span>', 'url' => '#'),
-                array('label' => '<i class="fa fa-user"></i> <span>Users & Customers</span>', 'url' => '#'),
                 array('label' => '<i class="fa fa-th"></i> <span>Administration</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
                         array('label' => '<i class="fa fa-user"></i> <span>User</span>', 'url' => array('/site/user/index')),
                         array('label' => '<i class="fa fa-th"></i> <span>Security Roles</span>', 'url' => array('/site/masterrole/index')),
-                        array('label' => '<i class="fa fa-plane"></i> <span>Countries</span>', 'url' => array('/site/mastercountry/index')),
                     ),
                 ),
             ),

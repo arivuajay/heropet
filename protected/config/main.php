@@ -6,16 +6,17 @@
 // CWebApplication properties can be configured here.
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name' => 'WIPOCOS',
+    'name' => 'HeroPet',
     // preloading 'log' component
     'preload' => array('log', 'booster'),
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
         'application.components.*',
+        'application.modules.cms.CmsModule',
     ),
     'modules' => array(
-        'site',
+        'site','cms',
         // uncomment the following to enable the Gii tool
         'gii' => array(
             'class' => 'system.gii.GiiModule',
@@ -42,7 +43,7 @@ return array(
         //
         'user' => array(
             'allowAutoLogin' => true,
-            'loginUrl' => array('/site/login'),
+            'loginUrl' => array('/site/default/login'),
         ),
         // uncomment the following to enable URLs in path-format
         'urlManager' => array(
@@ -64,10 +65,14 @@ return array(
                 ),
             ),
         ),
+        'cms'=>array(
+            'class'=>'cms.components.Cms'
+        ),
+
     ),
     // application-level parameters that can be accessed
     //setting the basic language value
-    'defaultController' => 'site/default/login',
+    'defaultController' => 'site/default/index',
     // using Yii::app()->params['paramName']
     'params' => require(dirname(__FILE__) . '/params.php'),
     'theme' => 'adminlte',

@@ -8,4 +8,5 @@ return array(
     '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
     '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
     'login'=>'/site/users/login',
+    'page/<name>-<id:\d+>.html'=>'cms/node/page', // clean URLs for pages
 );
