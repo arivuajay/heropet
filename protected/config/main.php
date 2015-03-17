@@ -16,7 +16,7 @@ return array(
         'application.modules.cms.CmsModule',
     ),
     'modules' => array(
-        'site','cms',
+        'admin','cms',
         // uncomment the following to enable the Gii tool
         'gii' => array(
             'class' => 'system.gii.GiiModule',
@@ -43,7 +43,7 @@ return array(
         //
         'user' => array(
             'allowAutoLogin' => true,
-            'loginUrl' => array('/site/default/login'),
+            'loginUrl' => array('/admin/default/login'),
         ),
         // uncomment the following to enable URLs in path-format
         'urlManager' => array(
@@ -54,7 +54,7 @@ return array(
         // database settings are configured in database.php
         'db' => require(dirname(__FILE__) . '/database.php'),
         'errorHandler' => array(
-            'errorAction' => 'site/error',
+            'errorAction' => 'admin/error',
         ),
         'log' => array(
             'class' => 'CLogRouter',
@@ -72,7 +72,7 @@ return array(
     ),
     // application-level parameters that can be accessed
     //setting the basic language value
-    'defaultController' => 'site/default/index',
+    'defaultController' => 'admin/default/index',
     // using Yii::app()->params['paramName']
     'params' => require(dirname(__FILE__) . '/params.php'),
     'theme' => 'adminlte',

@@ -17,7 +17,7 @@ class Controller extends CController {
      */
     public $menu = array();
 
-    protected $homeUrl = array('/site/default/index');
+    protected $homeUrl = array('/admin/default/index');
 
     /**
      * @var array the breadcrumbs of the current page. The value of this property will
