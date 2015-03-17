@@ -35,8 +35,8 @@
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => '<i class="fa fa-user"></i> <span>User</span>', 'url' => array('/site/user/index')),
-                        array('label' => '<i class="fa fa-th"></i> <span>Security Roles</span>', 'url' => array('/site/masterrole/index')),
+                        array('label' => '<i class="fa fa-user"></i> <span>User</span>', 'url' => array('/admin/user/index')),
+                        array('label' => '<i class="fa fa-th"></i> <span>Security Roles</span>', 'url' => array('/admin/masterrole/index')),
                     ),
                 ),
             ),

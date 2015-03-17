@@ -213,7 +213,7 @@
                 if (Yii::app()->user->isGuest) {
                     ?>
                     <li class="footer">
-                        <?php echo CHtml::link('Login', array('/site/default//login')) ?>
+                        <?php echo CHtml::link('Login', array('/admin/default//login')) ?>
                     </li>
                     <?php
                 } else {
@@ -232,10 +232,10 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <?php echo CHtml::link('Profile', array('/site/default/profile'), array("class" => "btn btn-default btn-flat")) ?>
+                                    <?php echo CHtml::link('Profile', array('/admin/default/profile'), array("class" => "btn btn-default btn-flat")) ?>
                                 </div>
                                 <div class="pull-right">
-                                    <?php echo CHtml::link('Sign out', array('/site/default/logout'), array('class' => 'btn btn-default btn-flat')) ?>
+                                    <?php echo CHtml::link('Sign out', array('/admin/default/logout'), array('class' => 'btn btn-default btn-flat')) ?>
                                 </div>
                             </li>
                         </ul>
