@@ -16,7 +16,7 @@ return array(
         'application.modules.cms.CmsModule',
     ),
     'modules' => array(
-        'admin','cms','site'
+        'admin','cms','site',
         // uncomment the following to enable the Gii tool
         'gii' => array(
             'class' => 'system.gii.GiiModule',
