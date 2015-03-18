@@ -66,7 +66,7 @@ return array(
             ),
         ),
         'cms'=>array(
-            'class'=>'cms.components.Cms'
+            'class'=>'cms.components.Cms',
         ),
 
     ),

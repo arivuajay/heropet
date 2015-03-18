@@ -141,4 +141,11 @@ class CmsContent extends CmsActiveRecord
 		$attachment->save();
 		$attachment->saveFile($file);
 	}
+        public function dataProvider() {
+        return new CActiveDataProvider($this, array(
+            'pagination' => array(
+                'pageSize' => PAGE_SIZE,
+            )
+        ));
+    }
 }

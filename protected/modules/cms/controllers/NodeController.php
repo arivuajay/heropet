@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NodeController class file.
  * @author Christoffer Niska <christoffer.niska@nordsoftware.com>
@@ -6,184 +7,175 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package cms.controllers
  */
-class NodeController extends CmsController
-{
-	/**
-	 * @property string the name of the default action
-	 */
-	public $defaultAction = 'view';
-	/**
-	 * @string string the layout to use with this controller
-	 */
-	public $layout = 'cms';
+class NodeController extends CmsController {
 
-	/**
-	 * @return array the action filters for this controller.
-	 */
-	public function filters()
-	{
-		return array(
-			array('cms.components.CmsPageFilter + page'),
-		);
-	}
+    /**
+     * @property string the name of the default action
+     */
+    public $defaultAction = 'view';
 
-	/**
-	 * Display the page to update a particular model.
-	 * @param $id the id of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$cms = Yii::app()->cms;
-		$model = $this->loadModel($id);
+    /**
+     * @string string the layout to use with this controller
+     */
+//	public $layout = 'cms';
+    /**
+     * @return array the action filters for this controller.
+     */
+    public function filters() {
+        return array(
+            array('cms.components.CmsPageFilter + page'),
+        );
+    }
 
-		//$this->performAjaxValidation($model);
+    /**
+     * Display the page to update a particular model.
+     * @param $id the id of the model to be updated
+     */
+    public function actionUpdate($id) {
+        $cms = Yii::app()->cms;
+        $model = $this->loadModel($id);
 
-		$translations = array();
-		foreach (array_keys($cms->languages) as $language)
-		{
-			$content = $model->getContent($language);
+        //$this->performAjaxValidation($model);
 
-			if ($content === null)
-				$content = $model->createContent($language);
+        $translations = array();
+        foreach (array_keys($cms->languages) as $language) {
+            $content = $model->getContent($language);
 
-			$translations[$language] = $content;
-		}
+            if ($content === null)
+                $content = $model->createContent($language);
 
-		if (isset($_POST['CmsNode']) && isset($_POST['CmsContent']))
-		{
-			$valid = true;
-			foreach ($translations as $language => $content)
-			{
-				$content->attributes = $_POST['CmsContent'][$language];
-				$content->attachment = $upload = CUploadedFile::getInstance($content, '['.$content->locale.']attachment');
-				$valid = $valid && $content->validate();
+            $translations[$language] = $content;
+        }
 
-				if ($upload !== null)
-					$content->createAttachment($upload);
+        if (isset($_POST['CmsNode']) && isset($_POST['CmsContent'])) {
+            $valid = true;
+            foreach ($translations as $language => $content) {
+                $content->attributes = $_POST['CmsContent'][$language];
+                $content->attachment = $upload = CUploadedFile::getInstance($content, '[' . $content->locale . ']attachment');
+                $valid = $valid && $content->validate();
 
-				$translations[$language] = $content;
-			}
+                if ($upload !== null)
+                    $content->createAttachment($upload);
 
-			if ($valid)
-			{
-				$model->attributes = $_POST['CmsNode'];
-				$model->save(); // we need to save the node so that the updated column is updated
+                $translations[$language] = $content;
+            }
 
-				foreach ($translations as $content)
-					$content->save();
+            if ($valid) {
+                $model->attributes = $_POST['CmsNode'];
+                $model->save(); // we need to save the node so that the updated column is updated
 
-				Yii::app()->user->setFlash($cms->flashSuccess, Yii::t('CmsModule.core', 'Node updated.'));
-				$this->redirect(array('update', 'id'=>$id));
-			}
-		}
+                foreach ($translations as $content)
+                    $content->save();
 
-		$this->render('update', array(
-			'model'=>$model,
-			'translations'=>$translations,
-		));
-	}
+                Yii::app()->user->setFlash($cms->flashSuccess, Yii::t('CmsModule.core', 'Node updated.'));
+                $this->redirect(array('update', 'id' => $id));
+            }
+        }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the id of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		// we only allow deletion via POST request
-		$this->loadModel($id)->delete();
-		Yii::app()->user->setFlash(Yii::app()->cms->flashSuccess, Yii::t('CmsModule.core', 'Node deleted.'));
+        $this->render('update', array(
+            'model' => $model,
+            'translations' => $translations,
+        ));
+    }
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if (!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : Yii::app()->homeUrl);
-	}
+    public function actionManage() {
+        $model = new CmsContent();
+        $this->render('manage', compact('model'));
+    }
 
-	/**
-	 * Displays a particular page.
-	 * @param $id the id of the model to display
-	 */
-	public function actionPage($id)
-	{
-		$app = Yii::app();
-		$model = $this->loadModel($id);
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the id of the model to be deleted
+     */
+    public function actionDelete($id) {
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+        Yii::app()->user->setFlash(Yii::app()->cms->flashSuccess, Yii::t('CmsModule.core', 'Node deleted.'));
 
-		if ($model->content !== null)
-		{
-			/** @var CClientScript $cs */
-			$cs = $app->clientScript;
-			$cs->registerMetaTag($model->content->metaTitle, 'title');
-			$cs->registerMetaTag($model->content->metaDescription, 'description');
-			$cs->registerMetaTag($model->content->metaKeywords, 'keywords');
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : Yii::app()->homeUrl);
+    }
 
-			if (!empty($model->content->css))
-				$cs->registerCss($model->name, $model->content->css);
+    /**
+     * Displays a particular page.
+     * @param $id the id of the model to display
+     */
+    public function actionPage($id) {
+        $app = Yii::app();
+        $model = $this->loadModel($id);
+
+        if ($model->content !== null) {
+            /** @var CClientScript $cs */
+            $cs = $app->clientScript;
+            $cs->registerMetaTag($model->content->metaTitle, 'title');
+            $cs->registerMetaTag($model->content->metaDescription, 'description');
+            $cs->registerMetaTag($model->content->metaKeywords, 'keywords');
+
+            if (!empty($model->content->css))
+                $cs->registerCss($model->name, $model->content->css);
 
             $this->pageTitle = strtr($app->cms->pageTitleTemplate, array(
-				'{title}'=>$model->pageTitle,
-				'{appName}'=>Yii::app()->name,
-			));
+                '{title}' => $model->pageTitle,
+                '{appName}' => Yii::app()->name,
+            ));
 
             $this->breadcrumbs = $model->getBreadcrumbs();
-		}
+        }
 
-		$this->layout = $app->cms->appLayout;
+        $this->layout = $app->cms->appLayout;
 
-		$this->render('page', array(
-			'model'=>$model,
-			'content'=>$model->render(),
-		));
-	}
+        $this->render('page', array(
+            'model' => $model,
+            'content' => $model->render(),
+        ));
+    }
 
-	/**
-	 * Deletes an attachment with the given id.
-	 * @param $id the attachment id
-	 * @throws CHttpException if the request is not a POST-request
-	 */
-	public function actionDeleteAttachment($id)
-	{
-		if (Yii::app()->request->isPostRequest)
-		{
-			var_dump(CmsAttachment::model()->findByPk($id));
+    /**
+     * Deletes an attachment with the given id.
+     * @param $id the attachment id
+     * @throws CHttpException if the request is not a POST-request
+     */
+    public function actionDeleteAttachment($id) {
+        if (Yii::app()->request->isPostRequest) {
+            var_dump(CmsAttachment::model()->findByPk($id));
 
-			// we only allow deletion via POST request
-			CmsAttachment::model()->findByPk($id)->delete();
-			Yii::app()->user->setFlash(Yii::app()->cms->flashSuccess, Yii::t('CmsModule.core', 'Attachment deleted.'));
+            // we only allow deletion via POST request
+            CmsAttachment::model()->findByPk($id)->delete();
+            Yii::app()->user->setFlash(Yii::app()->cms->flashSuccess, Yii::t('CmsModule.core', 'Attachment deleted.'));
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if (!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-	}
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if (!isset($_GET['ajax']))
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        } else
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+    }
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
-	 * @return CmsNode the model
-	 */
-	public function loadModel($id)
-	{
-		$model = CmsNode::model()->findByPk($id, 'deleted=0');
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer the ID of the model to be loaded
+     * @return CmsNode the model
+     */
+    public function loadModel($id) {
+        $model = CmsNode::model()->findByPk($id, 'deleted=0');
 
-		if ($model === null)
-			throw new CHttpException(404, 'The requested page does not exist.');
+        if ($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
 
-		return $model;
-	}
+        return $model;
+    }
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if (isset($_POST['ajax']) && $_POST['ajax']==='cms-content-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+    /**
+     * Performs the AJAX validation.
+     * @param CModel the model to be validated
+     */
+    protected function performAjaxValidation($model) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'cms-content-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
+
 }
