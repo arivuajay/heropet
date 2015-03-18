@@ -9,8 +9,18 @@ class UserIdentity extends CUserIdentity {
 
     const ERROR_ACCOUNT_BLOCKED = 3;
     const ERROR_ACCOUNT_DELETED = 4;
+    
+    public $email;
+    
+    const ERROR_EMAIL_INVALID=1;
 
     private $_id;
+    
+    public function __construct($username, $password, $email)
+    {
+        parent::__construct($username, $password);
+        $this->email=$email;
+    }
 
     /**
      * Authenticates a user.
@@ -21,11 +31,11 @@ class UserIdentity extends CUserIdentity {
      * @return boolean whether authentication succeeds.
      */
     public function authenticate() {
-        $user = User::model()->find('username = :U', array(':U' => $this->username));
+        $user = User::model()->find('email = :U', array(':U' => $this->email));
 
 
         if ($user === null):
-            $this->errorCode = self::ERROR_USERNAME_INVALID;
+            $this->errorCode = self::ERROR_EMAIL_INVALID;
 
         elseif ($user->status == 0):
             $this->errorCode = self::ERROR_ACCOUNT_BLOCKED;
@@ -35,7 +45,7 @@ class UserIdentity extends CUserIdentity {
             if ($is_correct_password):
                 $this->errorCode = self::ERROR_NONE;
             else:
-                $this->errorCode = self::ERROR_USERNAME_INVALID;   // Error Code : 1
+                $this->errorCode = self::ERROR_EMAIL_INVALID;   // Error Code : 1
             endif;
         endif;
 
@@ -51,9 +61,9 @@ class UserIdentity extends CUserIdentity {
     }
 
     public function autoLogin() {
-        $user = User::model()->find('username = :U', array(':U' => $this->username));
+        $user = User::model()->find('email = :U', array(':U' => $this->email));
         if ($user === null):
-            $this->errorCode = self::ERROR_USERNAME_INVALID;
+            $this->errorCode = self::ERROR_EMAIL_INVALID;
         else:
             $this->setUserData($user);
         endif;
@@ -62,7 +72,7 @@ class UserIdentity extends CUserIdentity {
 
     protected function setUserData($user) {
         $this->_id = $user->id;
-        $this->setState('name', $user->name);
+        $this->setState('email', $user->email);
         $this->setState('role', $user->role);
         return;
     }

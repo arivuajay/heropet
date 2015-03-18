@@ -5,18 +5,15 @@
  *
  * The followings are the available columns in table '{{user}}':
  * @property integer $id
- * @property string $username
- * @property string $name
+ * @property string $email
  * @property string $password_hash
  * @property string $password_reset_token
- * @property string $email
  * @property integer $role
  * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property string $created_at
+ * @property string $updated_at
  *
  * The followings are the available model relations:
- * @property AuthResources[] $authResources
  * @property MasterRole $role0
  */
 class User extends CActiveRecord {
@@ -41,18 +38,17 @@ class User extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('username, name, email', 'required', 'on' => 'create,update'),
-            array('username,email', 'unique'),
+            array('email', 'required', 'on' => 'create, forgotpassword, update, register'),
+            array('email', 'unique', 'except' => 'forgotpassword'),
             array('email', 'email'),
-            array('email', 'required', 'on' => 'forgotpassword'),
             array('confirm_password', 'compare', 'compareAttribute' => 'new_password', 'on' => 'update'),
-            array('role, status, created_at, updated_at', 'numerical', 'integerOnly' => true),
-            array('username, name, password_hash, password_reset_token, email,new_password', 'length', 'max' => 255),
+            array('role, status', 'numerical', 'integerOnly' => true),
+            array('password_hash, password_reset_token, email, new_password', 'length', 'max' => 255),
             array('new_password', 'compare', 'compareAttribute' => 'confirm_password', 'on' => 'reset'),
             array('new_password, confirm_password', 'required', 'on' => 'reset'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, username, name, password_hash, password_reset_token, email, role, status, created_at, updated_at,confirm_password,new_password', 'safe', 'on' => 'search'),
+            array('id, password_hash, password_reset_token, email, role, status, created_at, updated_at, confirm_password, new_password', 'safe', 'on' => 'search'),
         );
     }
 
@@ -63,7 +59,6 @@ class User extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'authResources' => array(self::HAS_MANY, 'AuthResources', 'Master_User_ID'),
             'roleMdl' => array(self::BELONGS_TO, 'MasterRole', 'role'),
         );
     }
@@ -74,8 +69,6 @@ class User extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'username' => 'Username',
-            'name' => 'Name',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
@@ -104,15 +97,13 @@ class User extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('username', $this->username, true);
-        $criteria->compare('name', $this->name, true);
         $criteria->compare('password_hash', $this->password_hash, true);
         $criteria->compare('password_reset_token', $this->password_reset_token, true);
         $criteria->compare('email', $this->email, true);
         $criteria->compare('role', $this->role);
         $criteria->compare('status', $this->status);
-        $criteria->compare('created_at', $this->created_at);
-        $criteria->compare('updated_at', $this->updated_at);
+        $criteria->compare('created_at', $this->created_at,true);
+        $criteria->compare('updated_at', $this->updated_at,true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -140,6 +131,15 @@ class User extends CActiveRecord {
         return parent::model($className);
     }
 
+    public function beforeSave() {
+        if ($this->isNewRecord)
+            $this->created_at = new CDbExpression('NOW()');
+
+        $this->updated_at = new CDbExpression('NOW()');
+
+        return parent::beforeSave();
+    }
+
     protected function afterValidate() {
         if ($this->scenario == 'update' && !empty($this->confirm_password)) {
             $this->password_hash = Myclass::encrypt($this->confirm_password);
@@ -147,4 +147,5 @@ class User extends CActiveRecord {
 
         return parent::afterValidate();
     }
+
 }

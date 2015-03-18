@@ -75,6 +75,7 @@ return array(
     'defaultController' => 'admin/default/index',
     // using Yii::app()->params['paramName']
     'params' => require(dirname(__FILE__) . '/params.php'),
+    'timeZone' => 'Asia/Calcutta',
     'theme' => 'adminlte',
     'sourceLanguage' => 'en_us',
     'language' => 'en_US',

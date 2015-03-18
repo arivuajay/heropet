@@ -15,16 +15,15 @@ class LoginForm extends CFormModel {
 
     /**
      * Declares the validation rules.
-     * The rules state that username and password are required,
+     * The rules state that email and password are required,
      * and password needs to be authenticated.
      */
     public function rules() {
         return array(
-            // username and password are required
-            array('username, password', 'required'),
+            // email and password are required
+            array('email, password', 'required'),
             array('email', 'required', 'on' => 'forgotpass'),
             array('email', 'email'),
-            //array('admin_username', 'email'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),
             // password needs to be authenticated
@@ -37,7 +36,7 @@ class LoginForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'username' => Yii::t('admin', 'Username'),
+            'email' => Yii::t('admin', 'Email'),
             'password' => Yii::t('admin', 'Password'),
             'rememberMe' => Yii::t('admin', 'Remember me'),
         );
@@ -50,29 +49,29 @@ class LoginForm extends CFormModel {
     public function authenticate($attribute, $params) {
 
         if (!$this->hasErrors()):
-            $this->_identity = new UserIdentity($this->username, $this->password);
+            $this->_identity = new UserIdentity($this->username, $this->password, $this->email);
             if (!$this->_identity->authenticate()):
                 if ($this->_identity->errorCode)
-                    $this->addError('username', Myclass::t('Incorrect User Name or Password. Please try again.'));
+                    $this->addError('password', Myclass::t('Incorrect Email or Password. Please try again.'));
             endif;
         endif;
     }
 
     /**
-     * Logs in the user using the given username and password in the model.
+     * Logs in the user using the given email and password in the model.
      * @return boolean whether login is successful
      */
     public function login() {
 
         if ($this->_identity === null):
-            $this->_identity = new UserIdentity($this->username, $this->password);
+            $this->_identity = new UserIdentity($this->username, $this->password, $this->email);
             $this->_identity->authenticate();
         endif;
         if ($this->_identity->errorCode === UserIdentity::ERROR_NONE):
             //$duration= 3600*24*30; // 30 days
             $duration = $this->rememberMe ? 3600 * 24 * 30 : 0; // 30 days
             Yii::app()->user->login($this->_identity, $duration);
-            MyClass::rememberMe($this->username, $this->rememberMe);
+            MyClass::rememberMe($this->email, $this->rememberMe);
             return true;
         else:
 

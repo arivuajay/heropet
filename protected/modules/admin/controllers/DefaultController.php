@@ -23,8 +23,8 @@ class DefaultController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('login', 'error', 'request-password-reset'),
+            array('allow', // allow all users to perform 'Login' and 'RequestPasswordReset' actions
+                'actions' => array('login', 'request-password-reset'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -37,9 +37,7 @@ class DefaultController extends Controller {
         );
     }
 
-    public function actionIndex() {
-        $this->render('index');
-    }
+    
 
     public function actionLogin() {
         $this->layout = '//layouts/login';
@@ -63,6 +61,26 @@ class DefaultController extends Controller {
     public function actionLogout() {
         Yii::app()->user->logout();
         $this->redirect(array('/admin/default/login'));
+    }
+    
+    public function actionIndex() {
+        $this->render('index');
+    }
+    
+    public function actionProfile() {
+        $id = Yii::app()->user->id;
+        $model = User::model()->findByPk($id);
+        $model->setScenario('update');
+
+        if (isset($_POST['User'])) {
+            $model->attributes = $_POST['User'];
+            if ($model->validate()):
+                $model->save(false);
+                Yii::app()->user->setFlash('success', 'Profile updated successfully');
+                $this->refresh();
+            endif;
+        }
+        $this->render('profile', compact('model'));
     }
 
     public function actionRequestPasswordReset() {
@@ -104,20 +122,6 @@ class DefaultController extends Controller {
         ));
     }
 
-    public function actionProfile() {
-        $id = Yii::app()->user->id;
-        $model = User::model()->findByPk($id);
-        $model->setScenario('update');
-
-        if (isset($_POST['User'])) {
-            $model->attributes = $_POST['User'];
-            if ($model->validate()):
-                $model->save(false);
-                Yii::app()->user->setFlash('success', 'Profile updated successfully');
-                $this->refresh();
-            endif;
-        }
-        $this->render('profile', compact('model'));
-    }
+    
 
 }

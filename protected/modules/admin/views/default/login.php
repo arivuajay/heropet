@@ -21,9 +21,9 @@ $this->breadcrumbs = array(
         <?php endif ?>
         <p>Please fill out the following fields to login:</p>
         <div class="form-group">
-            <?php echo $form->labelEx($model, 'username') ?>
-            <?php echo $form->textField($model, 'username', array('autofocus', 'class' => 'form-control')); ?>
-            <?php echo $form->error($model, 'username') ?>
+            <?php echo $form->labelEx($model, 'email') ?>
+            <?php echo $form->textField($model, 'email', array('autofocus', 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'email') ?>
         </div>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'password') ?>
