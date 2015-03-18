@@ -13,7 +13,6 @@ return array(
     'import' => array(
         'application.models.*',
         'application.components.*',
-        'application.modules.cms.CmsModule',
     ),
     'modules' => array(
         'admin','cms','site',
@@ -65,9 +64,7 @@ return array(
                 ),
             ),
         ),
-        'cms'=>array(
-            'class'=>'cms.components.Cms',
-        ),
+        
 
     ),
     // application-level parameters that can be accessed

@@ -5,7 +5,7 @@
 $this->title = 'Master Roles';
 $this->breadcrumbs = array(
     'Master Roles',
-);Yii::app()->cms->createUrl('yooo');
+);
 ?>
 
 <div class="col-lg-12 col-md-12">
