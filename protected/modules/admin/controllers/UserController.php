@@ -18,7 +18,7 @@ class UserController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+            array('allow', // allow all user to perform 'forgot' and 'reset' actions
                 'actions' => array('forgot', 'reset'),
                 'users' => array('*'),
             ),
@@ -44,7 +44,7 @@ class UserController extends Controller {
 
     /**
      * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'index' page.
      */
     public function actionCreate() {
         $model = new User('create');
@@ -57,13 +57,13 @@ class UserController extends Controller {
                 $model->password_hash = Myclass::encrypt($password);
 
                 $model->save(false);
+
                 if (!empty($model->email)):
                     $mail = new Sendmail();
                     $nextstep_url = Yii::app()->createAbsoluteUrl('/admin/default/login');
                     $subject = "Registraion Mail From - " . SITENAME;
                     $trans_array = array(
-                        "{NAME}" => $model->name,
-                        "{USERNAME}" => $model->username,
+                        "{USERNAME}" => $model->email,
                         "{PASSWORD}" => $password,
                         "{NEXTSTEPURL}" => $nextstep_url,
                     );
@@ -72,6 +72,7 @@ class UserController extends Controller {
                     Yii::app()->user->setFlash('success', 'User Created Successfully!!!');
                     $this->redirect(array('index'));
                 endif;
+
             endif;
         }
 
@@ -82,7 +83,7 @@ class UserController extends Controller {
 
     /**
      * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'index' page.
      * @param integer $id the ID of the model to be updated
      */
     public function actionUpdate($id) {
@@ -108,7 +109,7 @@ class UserController extends Controller {
 
     /**
      * Deletes a particular model.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id the ID of the model to be deleted
      */
     public function actionDelete($id) {
@@ -123,18 +124,14 @@ class UserController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $search = false;
-
-        $model = new User();
         $searchModel = new User('search');
         $searchModel->unsetAttributes();  // clear any default values
+
         if (isset($_GET['User'])) {
-            $search = true;
             $searchModel->attributes = $_GET['User'];
-            $searchModel->search();
         }
 
-        $this->render('index', compact('searchModel', 'search', 'model'));
+        $this->render('index', compact('searchModel'));
     }
 
     /**
@@ -171,7 +168,7 @@ class UserController extends Controller {
         $model = new User();
         $model->setScenario('forgotpassword');
         $this->performAjaxValidation($model);
-        
+
         if (isset($_POST['forgot'])) {
             $model->attributes = $_POST['User'];
             if ($model->validate()) {
@@ -212,12 +209,12 @@ class UserController extends Controller {
 
     public function actionReset($str, $id) {
         $this->layout = '//layouts/login';
-        
+
         if (!Yii::app()->user->isGuest)
             $this->redirect(array('/admin/default/index'));
 
         $model = $this->loadModel($id);
-        
+
         if (empty($model) || $model->password_reset_token != $str) {
             Yii::app()->user->setFlash('danger', "Not a valid Reset Link");
             $this->redirect(array('/admin/default/login'));
@@ -237,7 +234,7 @@ class UserController extends Controller {
 
         $model->setScenario('reset');
         $this->performAjaxValidation($model);
-        
+
         if (isset($_POST['reset'])) {
             $model->attributes = $_POST['User'];
             if ($model->validate()) {

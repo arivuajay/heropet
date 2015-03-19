@@ -1,5 +1,5 @@
 <?php
-$this->title = 'View User #'.$model->name;
+$this->title = 'View User #'.$model->id;
 $this->breadcrumbs = array(
     'Users' => array('index'),
     'View User',
@@ -9,7 +9,7 @@ $this->breadcrumbs = array(
 <div class="user-view">
     <p>
         <?= CHtml::link('Update', array('update', 'id' => $model->id), array('class' => 'btn btn-primary')); ?>
-        <?= CHtml::link('Delete', array('delete', 'id' => $model->id), array('confirm' => 'Are you sure you want to delete this item?', 'class' => 'btn btn-danger'));
+        <?= CHtml::link('Delete', array('delete', 'id' => $model->id), array('confirm' => 'Are you sure you want to delete this user?', 'class' => 'btn btn-danger'));
         ?>
     </p>
     <?php
@@ -18,8 +18,6 @@ $this->breadcrumbs = array(
         'htmlOptions' => array('class'=>'table table-striped table-bordered'),
         'attributes' => array(
             'id',
-            'username',
-            'name',
             array(
                 'label' => $model->getAttributeLabel('email'),
                 'type'  => 'html',
