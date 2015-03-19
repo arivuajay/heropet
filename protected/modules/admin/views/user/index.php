@@ -27,7 +27,7 @@ $this->breadcrumbs = array(
                 'value' => 'CHtml::link(CHtml::encode($data->email), "mailto:".CHtml::encode($data->email))',
             ),
             array(
-                'name' => 'role',
+                'name' => 'role_search',
                 'htmlOptions' => array('style' => 'width: 180px;', 'vAlign' => 'middle'),
                 'type' => 'raw',
                 'value' => 'CHtml::encode($data->roleMdl->Description)',
@@ -39,6 +39,7 @@ $this->breadcrumbs = array(
                 'value' => function($data) {
                     echo ($data->status == 1) ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
                 },
+                'filter' => array(0 => 'In-Active', 1 => 'Active')
             ),
             array(
                 'header' => 'Actions',

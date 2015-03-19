@@ -23,6 +23,8 @@ class User extends CActiveRecord {
 
     public $new_password;
     public $confirm_password;
+    
+    public $role_search;
 
     /**
      * @return string the associated database table name
@@ -48,7 +50,7 @@ class User extends CActiveRecord {
             array('new_password, confirm_password', 'required', 'on' => 'reset'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, password_hash, password_reset_token, email, role, status, created_at, updated_at, confirm_password, new_password', 'safe', 'on' => 'search'),
+            array('id, password_hash, password_reset_token, email, role_search, status, created_at, updated_at, confirm_password, new_password', 'safe', 'on' => 'search'),
         );
     }
 
@@ -95,18 +97,28 @@ class User extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $criteria->with = array('roleMdl');
 
         $criteria->compare('id', $this->id);
         $criteria->compare('password_hash', $this->password_hash, true);
         $criteria->compare('password_reset_token', $this->password_reset_token, true);
         $criteria->compare('email', $this->email, true);
-        $criteria->compare('role', $this->role);
+        $criteria->compare('roleMdl.Description', $this->role_search, true);
         $criteria->compare('status', $this->status);
-        $criteria->compare('created_at', $this->created_at,true);
-        $criteria->compare('updated_at', $this->updated_at,true);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('updated_at', $this->updated_at, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            'sort' => array(
+                'attributes' => array(
+                    'role_search' => array(
+                        'asc' => 'roleMdl.Description',
+                        'desc' => 'roleMdl.Description DESC',
+                    ),
+                    '*',
+                ),
+            ),
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,
             )
