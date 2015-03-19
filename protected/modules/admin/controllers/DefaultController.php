@@ -37,8 +37,6 @@ class DefaultController extends Controller {
         );
     }
 
-    
-
     public function actionLogin() {
         $this->layout = '//layouts/login';
 
@@ -121,7 +119,5 @@ class DefaultController extends Controller {
             'model' => $model,
         ));
     }
-
-    
 
 }
