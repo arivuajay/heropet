@@ -13,7 +13,6 @@
  * @property string $Rowversion
  *
  * The followings are the available model relations:
- * @property AuthResources[] $authResources
  * @property User[] $users
  */
 class MasterRole extends CActiveRecord {
@@ -50,7 +49,6 @@ class MasterRole extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-//            'authResources' => array(self::HAS_MANY, 'AuthResources', 'Master_Role_ID'),
             'users' => array(self::HAS_MANY, 'User', 'role'),
         );
     }

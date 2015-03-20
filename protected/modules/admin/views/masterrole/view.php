@@ -5,7 +5,7 @@
 $this->title='View #'.$model->Master_Role_ID;
 $this->breadcrumbs=array(
 	'Master Roles'=>array('index'),
-	'View '.'MasterRole',
+	'View Master Role',
 );
 ?>
 

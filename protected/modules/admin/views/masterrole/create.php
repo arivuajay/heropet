@@ -2,7 +2,7 @@
 /* @var $this MasterroleController */
 /* @var $model MasterRole */
 
-$this->title='Create Master Roles';
+$this->title='Create Master Role';
 $this->breadcrumbs=array(
 	'Master Roles'=>array('index'),
 	$this->title,

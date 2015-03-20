@@ -28,12 +28,8 @@ class MasterroleController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete'),
+                'actions' => array('index', 'view', 'create', 'update', 'delete'),
                 'users' => array('@'),
-            ),
-            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array(''),
-                'users' => array('admin'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -53,7 +49,7 @@ class MasterroleController extends Controller {
 
     /**
      * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'index' page.
      */
     public function actionCreate() {
         $model = new MasterRole;
@@ -65,7 +61,6 @@ class MasterroleController extends Controller {
             $model->attributes = $_POST['MasterRole'];
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', 'MasterRole Created Successfully!!!');
-                //$this->redirect(array('view','id'=>$model->Master_Role_ID));
                 $this->redirect(array('index'));
             }
         }
@@ -77,7 +72,7 @@ class MasterroleController extends Controller {
 
     /**
      * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'index' page.
      * @param integer $id the ID of the model to be updated
      */
     public function actionUpdate($id) {
@@ -90,7 +85,6 @@ class MasterroleController extends Controller {
             $model->attributes = $_POST['MasterRole'];
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', 'MasterRole Updated Successfully!!!');
-//				$this->redirect(array('view','id'=>$model->Master_Role_ID));
                 $this->redirect(array('index'));
             }
         }
@@ -119,32 +113,14 @@ class MasterroleController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $search = false;
-
-        $model = new MasterRole();
         $searchModel = new MasterRole('search');
         $searchModel->unsetAttributes();  // clear any default values
+        
         if (isset($_GET['MasterRole'])) {
-            $search = true;
             $searchModel->attributes = $_GET['MasterRole'];
-            $searchModel->search();
         }
 
-        $this->render('index', compact('searchModel', 'search', 'model'));
-    }
-
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin() {
-        $model = new MasterRole('search');
-        $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['MasterRole']))
-            $model->attributes = $_GET['MasterRole'];
-
-        $this->render('admin', array(
-            'model' => $model,
-        ));
+        $this->render('index', compact('searchModel'));
     }
 
     /**
