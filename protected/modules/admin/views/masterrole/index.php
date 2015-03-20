@@ -2,15 +2,15 @@
 /* @var $this MasterroleController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title = 'Master Roles';
+$this->title = Yii::t('AdminModule.masterrole', 'Master Roles');
 $this->breadcrumbs = array(
-    'Master Roles',
+    $this->title,
 );
 ?>
 
 <div class="col-lg-12 col-md-12">
     <div class="row mb10">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create MasterRole', array('/admin/masterrole/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.Yii::t("AdminModule.masterrole", "Create Master Role"), array('/admin/masterrole/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 

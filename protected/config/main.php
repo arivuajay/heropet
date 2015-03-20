@@ -76,4 +76,5 @@ return array(
     'theme' => 'adminlte',
     'sourceLanguage' => 'en_us',
     'language' => 'en_US',
+//    'language' => 'de',
 );
