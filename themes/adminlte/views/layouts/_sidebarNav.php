@@ -36,7 +36,7 @@
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
                         array('label' => '<i class="fa fa-user"></i> <span>User</span>', 'url' => array('/admin/user/index')),
-                        array('label' => '<i class="fa fa-user"></i> <span>CMS</span>', 'url' => array('/cms/node/manage')),
+                        array('label' => '<i class="fa fa-user"></i> <span>CMS</span>', 'url' => array('/cms/cmscontent/index')),
                         array('label' => '<i class="fa fa-th"></i> <span>Security Roles</span>', 'url' => array('/admin/masterrole/index')),
                     ),
                 ),
