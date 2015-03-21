@@ -33,5 +33,5 @@
         $cs->registerScriptFile($themeUrl . '/js/iCheck/iCheck.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/dropdown.js', $cs_pos_end);
         ?>
-    </body>dropdown
+    </body>
 </html>
