@@ -15,6 +15,7 @@
  *
  * The followings are the available model relations:
  * @property MasterRole $role0
+ * @property UserProfile[] $userProfiles
  */
 class User extends CActiveRecord {
 
@@ -62,6 +63,7 @@ class User extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'roleMdl' => array(self::BELONGS_TO, 'MasterRole', 'role'),
+            'userProfiles' => array(self::HAS_MANY, 'UserProfile', 'pet_user_id'),
         );
     }
 

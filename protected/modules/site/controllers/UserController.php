@@ -47,37 +47,58 @@ class UserController extends Controller {
      */
     public function actionRegister() {
         $model = new User('register');
+        $user_profile = new UserProfile;
 
         // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation($model);
+        $this->performAjaxValidation(array($model, $user_profile));
 
-        if (isset($_POST['User'])) {
+        if (isset($_POST['User'], $_POST['UserProfile'])) {
+
             $model->attributes = $_POST['User'];
-            if ($model->validate()) {
+            $user_profile->attributes = $_POST['UserProfile'];
+
+            $egmap = new EasyGoogleMap();
+            $current_position = $egmap->getCurrentPosition($user_profile->user_address);
+
+            $user_profile->latitude = $current_position['lat'];
+            $user_profile->longitude = $current_position['lng'];
+
+            // validate BOTH $model and $user_profile
+            $valid = $model->validate();
+            $valid = $user_profile->validate() && $valid;
+
+            if ($valid) {
+                
+                $country_id = Country::model()->checkCountry($current_position['country'], $current_position['country_code']);
+                $state_id = State::model()->checkState($country_id, $current_position['state'], $current_position['state_code']);
+                $city_id = City::model()->checkCity($country_id, $state_id, $current_position['city']);
+
+                $user_profile->pet_country_id = $country_id;
+                $user_profile->pet_state_id = $state_id;
+                $user_profile->pet_city_id = $city_id;
+
                 $password = Myclass::getRandomString(9);
                 $model->password_hash = Myclass::encrypt($password);
                 $model->role = 2;
-                
+
                 if ($model->save()) {
+                    $user_profile->pet_user_id = $model->id;
+                    $user_profile->save();
                     Yii::app()->user->setFlash('success', 'User Registered Successfully!!!');
                     $this->redirect(array('login'));
                 }
             }
         }
 
-        $this->render('register', array(
-            'model' => $model,
-        ));
+        $this->render('register', array('model' => $model, 'user_profile' => $user_profile));
     }
-    
+
     /**
      * User Login section 
      */
-    public function actionLogin(){
+    public function actionLogin() {
         
     }
-
-   
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
