@@ -8,7 +8,7 @@ return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'HeroPet',
     // preloading 'log' component
-    'preload' => array('log', 'booster'),
+    'preload' => array('log'),
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
@@ -53,7 +53,7 @@ return array(
         // database settings are configured in database.php
         'db' => require(dirname(__FILE__) . '/database.php'),
         'errorHandler' => array(
-            'errorAction' => 'admin/error',
+            'errorAction' => 'site/default/error',
         ),
         'log' => array(
             'class' => 'CLogRouter',
@@ -69,7 +69,7 @@ return array(
     ),
     // application-level parameters that can be accessed
     //setting the basic language value
-    'defaultController' => 'admin/default/index',
+    'defaultController' => 'site/default/index',
     // using Yii::app()->params['paramName']
     'params' => require(dirname(__FILE__) . '/params.php'),
     'timeZone' => 'Asia/Calcutta',
