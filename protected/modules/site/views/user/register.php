@@ -3,7 +3,7 @@
 /* @var $this UserController */
 /* @var $model User */
 
-$this->title = 'Register Users';
+$this->title = 'Register User';
 $this->breadcrumbs = array(
     $this->title,
 );

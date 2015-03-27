@@ -6,12 +6,17 @@
  * The followings are the available columns in table '{{user_profile}}':
  * @property integer $user_profile_id
  * @property integer $pet_user_id
+ * @property string $user_first_name
+ * @property string $user_last_name
  * @property string $user_address
  * @property double $latitude
  * @property double $longitude
  * @property integer $pet_country_id
  * @property integer $pet_state_id
  * @property integer $pet_city_id
+ * @property string $user_phone
+ * @property string $user_mobile
+ * @property string $user_profile_picture
  * @property string $created
  * @property string $updated
  *
@@ -34,13 +39,16 @@ class UserProfile extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('user_address', 'required'),
+            array('user_first_name, user_address', 'required'),
             array('pet_user_id, pet_country_id, pet_state_id, pet_city_id', 'numerical', 'integerOnly' => true),
             array('latitude, longitude', 'numerical'),
+            array('user_first_name, user_last_name, user_phone, user_mobile', 'length', 'max'=>100),
+            array('user_profile_picture', 'file', 'allowEmpty' => true, 'types' => 'jpg, jpeg, gif, png'),
+            array('user_profile_picture', 'safe'),
             array('latitude', 'required', 'message'=>'Can not find your location, Please enter correct address'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('user_profile_id, pet_user_id, user_address, latitude, longitude, pet_country_id, pet_state_id, pet_city_id, created, updated', 'safe', 'on' => 'search'),
+            array('user_profile_id, pet_user_id, user_first_name, user_last_name, user_address, latitude, longitude, pet_country_id, pet_state_id, pet_city_id, user_phone, user_mobile, user_profile_picture, created, updated', 'safe', 'on' => 'search'),
         );
     }
 
@@ -62,12 +70,17 @@ class UserProfile extends CActiveRecord {
         return array(
             'user_profile_id' => 'User Profile',
             'pet_user_id' => 'Pet User',
+            'user_first_name' => 'First Name',
+            'user_last_name' => 'Last Name',
             'user_address' => 'Address',
             'latitude' => 'Latitude',
             'longitude' => 'Longitude',
             'pet_country_id' => 'Pet Country',
             'pet_state_id' => 'Pet State',
             'pet_city_id' => 'Pet City',
+            'user_phone' => 'Phone',
+            'user_mobile' => 'Mobile',
+            'user_profile_picture' => 'Profile Picture',
             'created' => 'Created',
             'updated' => 'Updated',
         );
@@ -92,12 +105,17 @@ class UserProfile extends CActiveRecord {
 
         $criteria->compare('user_profile_id', $this->user_profile_id);
         $criteria->compare('pet_user_id', $this->pet_user_id);
+        $criteria->compare('user_first_name',$this->user_first_name,true);
+        $criteria->compare('user_last_name',$this->user_last_name,true);
         $criteria->compare('user_address', $this->user_address, true);
         $criteria->compare('latitude', $this->latitude);
         $criteria->compare('longitude', $this->longitude);
         $criteria->compare('pet_country_id', $this->pet_country_id);
         $criteria->compare('pet_state_id', $this->pet_state_id);
         $criteria->compare('pet_city_id', $this->pet_city_id);
+        $criteria->compare('user_phone',$this->user_phone,true);
+        $criteria->compare('user_mobile',$this->user_mobile,true);
+        $criteria->compare('user_profile_picture',$this->user_profile_picture,true);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('updated', $this->updated, true);
 

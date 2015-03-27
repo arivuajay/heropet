@@ -12,6 +12,8 @@ class CmsModule extends CWebModule
 			'cms.models.*',
 			'cms.components.*',
 		));
+                
+                Yii::app()->getComponent("booster");
 	}
 
 	public function beforeControllerAction($controller, $action)

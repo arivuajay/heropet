@@ -28,7 +28,7 @@ class UserController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'update', 'admin', 'delete'),
+                'actions' => array('profile', 'logout'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -68,7 +68,7 @@ class UserController extends Controller {
             $valid = $user_profile->validate() && $valid;
 
             if ($valid) {
-                
+
                 $country_id = Country::model()->checkCountry($current_position['country'], $current_position['country_code']);
                 $state_id = State::model()->checkState($country_id, $current_position['state'], $current_position['state_code']);
                 $city_id = City::model()->checkCity($country_id, $state_id, $current_position['city']);
@@ -83,7 +83,34 @@ class UserController extends Controller {
 
                 if ($model->save()) {
                     $user_profile->pet_user_id = $model->id;
-                    $user_profile->save();
+
+                    $uploadedFile = CUploadedFile::getInstance($user_profile, 'user_profile_picture');
+                    if (!empty($uploadedFile)) {
+                        $random_string = Myclass::getRandomString(5);
+                        $fileName = "{$random_string}-{$uploadedFile}";
+                        $user_profile->user_profile_picture = $fileName;
+                    }
+
+                    if ($user_profile->save()) {
+                        if (!empty($uploadedFile)) {
+                            $uploadedFile->saveAs(Yii::app()->basePath . '/../uploads/pet_user_profile/' . $fileName);
+                        }
+                    }
+
+                    if (!empty($model->email)):
+                        $mail = new Sendmail();
+                        $nextstep_url = Yii::app()->createAbsoluteUrl('/site/user/login');
+                        $subject = "Registraion Mail From - " . SITENAME;
+                        $trans_array = array(
+                            "{NAME}" => $user_profile->user_first_name,
+                            "{USERNAME}" => $model->email,
+                            "{PASSWORD}" => $password,
+                            "{NEXTSTEPURL}" => $nextstep_url,
+                        );
+                        $message = $mail->getMessage('registration', $trans_array);
+                        $mail->send($model->email, $subject, $message);
+                    endif;
+
                     Yii::app()->user->setFlash('success', 'User Registered Successfully!!!');
                     $this->redirect(array('login'));
                 }
@@ -98,6 +125,50 @@ class UserController extends Controller {
      */
     public function actionLogin() {
         
+        if (!Yii::app()->user->isGuest) {
+            $this->redirect(array('profile'));
+        }
+        
+        $model = new LoginForm();
+        $this->performAjaxValidation($model);
+
+        if (isset($_POST['LoginForm'])) {
+            $model->attributes = $_POST['LoginForm'];
+            if ($model->validate() && $model->login()):
+                $this->redirect(array('profile'));
+            endif;
+        }
+
+        $this->render('login', array('model' => $model));
+    }
+    
+    /**
+     * User Profile section 
+     */
+//    public function actionProfile() {
+//        $id = Yii::app()->user->id;
+//        $model = User::model()->findByPk($id);
+//        $model->setScenario('update');
+//
+//        if (isset($_POST['User'])) {
+//            $model->attributes = $_POST['User'];
+//            if ($model->validate()):
+//                $model->save(false);
+//                Yii::app()->user->setFlash('success', 'Profile updated successfully');
+//                $this->refresh();
+//            endif;
+//        }
+//        $this->render('profile', compact('model'));
+//    }
+    
+    /**
+     * User Logout section 
+     */
+    public function actionLogout() {
+        Yii::app()->user->logout();
+        Yii::app()->session->open();
+        Yii::app()->user->setFlash('success', 'Log Out Successfully!!!');
+        $this->redirect(array('login'));
     }
 
     /**
@@ -119,7 +190,8 @@ class UserController extends Controller {
      * @param User $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-form') {
+        $forms = array('login-form', 'user-form');
+        if (isset($_POST['ajax']) && in_array($_POST['ajax'], $forms)) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
