@@ -51,20 +51,23 @@
                             <li><a href="index-1.html">dog <span class="tip">hot</span></a></li>
                         </ul>
                     </li>-->
-
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" href="#">
-                            Register
-                            <i class="fa fa-angle-down"></i>
-                        </a>
+                    <?php if (Yii::app()->user->isGuest) { ?>
+                    <li>
+                        <?php echo CHtml::link('Register <i class="fa fa-angle-down"></i>',array('/site/user/register')); ?>
                     </li>
 
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" href="#">
-                            Login
-                            <i class="fa fa-angle-down"></i>
-                        </a>
+                    <li>
+                        <?php echo CHtml::link('Login <i class="fa fa-angle-down"></i>',array('/site/user/login')); ?>
                     </li>
+                    <?php } else { ?>
+                    <li>
+                        <?php echo CHtml::link('Profile <i class="fa fa-angle-down"></i>',array('/site/user/profile')); ?>
+                    </li>
+
+                    <li>
+                        <?php echo CHtml::link('Logout <i class="fa fa-angle-down"></i>',array('/site/user/logout')); ?>
+                    </li>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>
