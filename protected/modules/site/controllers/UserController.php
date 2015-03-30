@@ -31,10 +31,6 @@ class UserController extends Controller {
                 'actions' => array('profile', 'logout'),
                 'users' => array('@'),
             ),
-            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array(''),
-                'users' => array('admin'),
-            ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
@@ -124,11 +120,11 @@ class UserController extends Controller {
      * User Login section 
      */
     public function actionLogin() {
-        
+
         if (!Yii::app()->user->isGuest) {
             $this->redirect(array('profile'));
         }
-        
+
         $model = new LoginForm();
         $this->performAjaxValidation($model);
 
@@ -141,26 +137,72 @@ class UserController extends Controller {
 
         $this->render('login', array('model' => $model));
     }
-    
+
     /**
      * User Profile section 
      */
-//    public function actionProfile() {
-//        $id = Yii::app()->user->id;
-//        $model = User::model()->findByPk($id);
-//        $model->setScenario('update');
-//
-//        if (isset($_POST['User'])) {
-//            $model->attributes = $_POST['User'];
-//            if ($model->validate()):
-//                $model->save(false);
-//                Yii::app()->user->setFlash('success', 'Profile updated successfully');
-//                $this->refresh();
-//            endif;
-//        }
-//        $this->render('profile', compact('model'));
-//    }
-    
+    public function actionProfile() {
+        $id = Yii::app()->user->id;
+        $model = $this->loadModel($id);
+        $user_profile = UserProfile::model()->find(array(
+            'condition' => 'pet_user_id=:pet_user_id',
+            'params' => array(':pet_user_id' => $id),
+        ));
+
+        $this->performAjaxValidation(array($model, $user_profile));
+
+        //$model->setScenario('update');
+
+        if (isset($_POST['UserProfile'])) {
+
+            $_POST['UserProfile']['user_profile_picture'] = $user_profile->user_profile_picture;
+
+            //$model->attributes = $_POST['User'];
+            $user_profile->attributes = $_POST['UserProfile'];
+
+            $egmap = new EasyGoogleMap();
+            $current_position = $egmap->getCurrentPosition($user_profile->user_address);
+
+            $user_profile->latitude = $current_position['lat'];
+            $user_profile->longitude = $current_position['lng'];
+
+            // validate BOTH $model and $user_profile
+            $valid = $user_profile->validate();
+
+            if ($valid) {
+                $country_id = Country::model()->checkCountry($current_position['country'], $current_position['country_code']);
+                $state_id = State::model()->checkState($country_id, $current_position['state'], $current_position['state_code']);
+                $city_id = City::model()->checkCity($country_id, $state_id, $current_position['city']);
+
+                $user_profile->pet_country_id = $country_id;
+                $user_profile->pet_state_id = $state_id;
+                $user_profile->pet_city_id = $city_id;
+            }
+
+            $uploadedFile = CUploadedFile::getInstance($user_profile, 'user_profile_picture');
+            if (!empty($uploadedFile)) {
+                if ($user_profile->user_profile_picture) {
+                    $file = Yii::getPathOfAlias('webroot') . '/uploads/pet_user_profile/' . $user_profile->user_profile_picture;
+                    if (file_exists($file)) {
+                        unlink($file);
+                    }
+                }
+                $random_string = Myclass::getRandomString(5);
+                $fileName = "{$random_string}-{$uploadedFile}";
+                $user_profile->user_profile_picture = $fileName;
+            }
+
+            if ($user_profile->save()) {
+                if (!empty($uploadedFile)) {
+                    $uploadedFile->saveAs(Yii::app()->basePath . '/../uploads/pet_user_profile/' . $fileName);
+                }
+                Yii::app()->user->setFlash('success', 'Profile Updated Successfully!!!');
+                $this->redirect(array('profile'));
+            }
+        }
+        $this->render('profile', array('model' => $model, 'user_profile' => $user_profile));
+    }
+
     /**
      * User Logout section 
      */
