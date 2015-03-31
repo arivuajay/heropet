@@ -11,7 +11,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control search" name="q" id="q" placeholder="Search..." required>
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
             </form>
@@ -19,10 +19,10 @@
         <nav>
             <ul class="nav nav-pills nav-top">
                 <li>
-                    <a href="about-us.html"><i class="fa fa-angle-right"></i>About Us</a>
+                    <a href="#"><i class="fa fa-angle-right"></i>About Us</a>
                 </li>
                 <li>
-                    <a href="contact-us.html"><i class="fa fa-angle-right"></i>Contact Us</a>
+                    <a href="#"><i class="fa fa-angle-right"></i>Contact Us</a>
                 </li>
                 <li class="phone">
                     <span><i class="fa fa-phone"></i>(123) 456-7890</span>
@@ -60,6 +60,10 @@
                         <?php echo CHtml::link('Login <i class="fa fa-angle-down"></i>',array('/site/user/login')); ?>
                     </li>
                     <?php } else { ?>
+                    <li>
+                        <?php echo CHtml::link('Lost Pets <i class="fa fa-angle-down"></i>',array('/site/lost')); ?>
+                    </li>
+                    
                     <li>
                         <?php echo CHtml::link('Profile <i class="fa fa-angle-down"></i>',array('/site/user/profile')); ?>
                     </li>

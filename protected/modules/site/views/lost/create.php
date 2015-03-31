@@ -1,4 +1,5 @@
 <?php
+
 /* @var $this LostController */
 /* @var $model Lost */
 
@@ -9,6 +10,4 @@ $this->breadcrumbs = array(
 );
 ?>
 
-<div class="user-create">
-    <?php $this->renderPartial('_form', array('model' => $model, 'lost_photos' => $lost_photos)); ?>
-</div>
+<?php $this->renderPartial('_form', array('model' => $model, 'lost_photos' => $lost_photos)); ?>

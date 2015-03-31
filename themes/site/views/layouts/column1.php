@@ -36,7 +36,7 @@
     </section>
 <?php } ?>
 
-    <?php if (isset($this->flashMessages)): ?>
+    <?php if (isset($this->flashMessages) && !empty($this->flashMessages)):?>
         <div class="container">
             <?php foreach ($this->flashMessages as $key => $message) { ?>
                 <div class="row">

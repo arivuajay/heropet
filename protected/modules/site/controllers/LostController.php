@@ -28,7 +28,7 @@ class LostController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete'),
+                'actions' => array('index', 'view', 'create', 'update', 'delete', 'deleteLostPetPhoto'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -46,7 +46,7 @@ class LostController extends Controller {
             'model' => $this->loadModel($id),
         ));
     }
-    
+
     /**
      * Lists all models.
      */
@@ -70,10 +70,9 @@ class LostController extends Controller {
         $lost_photos = new LostPhoto;
 
         // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation($model);
+        $this->performAjaxValidation(array($model, $lost_photos));
 
         if (isset($_POST['Lost'])) {
-
             $model->attributes = $_POST['Lost'];
             $model->pet_user_id = Yii::app()->user->id;
 
@@ -85,7 +84,7 @@ class LostController extends Controller {
 
             // validate BOTH $model and $user_profile
             $valid = $model->validate();
-            // $valid = $user_profile->validate() && $valid;
+            $valid = $lost_photos->validate() && $valid;
 
             if ($valid) {
 
@@ -114,6 +113,59 @@ class LostController extends Controller {
         ));
     }
 
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id) {
+        $model = $this->loadModel($id);
+        $lost_photos = new LostPhoto;
+
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation(array($model, $lost_photos));
+
+        if (isset($_POST['Lost'])) {
+
+            $model->attributes = $_POST['Lost'];
+            $model->pet_user_id = Yii::app()->user->id;
+
+            $egmap = new EasyGoogleMap();
+            $lost_address = $egmap->getCurrentPosition($model->lost_address);
+
+            $model->latitude = $lost_address['lat'];
+            $model->longitude = $lost_address['lng'];
+
+            // validate BOTH $model and $user_profile
+            $valid = $model->validate();
+            $valid = $lost_photos->validate() && $valid;
+
+            if ($valid) {
+                $country_id = Country::model()->checkCountry($lost_address['country'], $lost_address['country_code']);
+                $state_id = State::model()->checkState($country_id, $lost_address['state'], $lost_address['state_code']);
+                $city_id = City::model()->checkCity($country_id, $state_id, $lost_address['city']);
+
+                $model->pet_country_id = $country_id;
+                $model->pet_state_id = $state_id;
+                $model->pet_city_id = $city_id;
+
+                if ($model->save()) {
+                    if (isset($_FILES['LostPhoto'])) {
+                        $images = CUploadedFile::getInstancesByName('LostPhoto[photos]');
+                        $this->actionSaveImagesDB($images, $model->lost_id);
+                    }
+                    Yii::app()->user->setFlash('success', 'Lost Pet Updated Successfully!!!');
+                    $this->redirect(array('index'));
+                }
+            }
+        }
+
+        $this->render('update', array(
+            'model' => $model,
+            'lost_photos' => $lost_photos
+        ));
+    }
+
     public function actionSaveImagesDB($images, $lost_pet_id) {
         // proceed if the images have been set
         if (isset($images) && count($images) > 0) {
@@ -136,37 +188,26 @@ class LostController extends Controller {
     }
 
     /**
-     * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
-     */
-    public function actionUpdate($id) {
-        $model = $this->loadModel($id);
-
-        // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation($model);
-
-        if (isset($_POST['Lost'])) {
-            $model->attributes = $_POST['Lost'];
-            if ($model->save()) {
-                Yii::app()->user->setFlash('success', 'Lost Updated Successfully!!!');
-//				$this->redirect(array('view','id'=>$model->lost_id));
-                $this->redirect(array('index'));
-            }
-        }
-
-        $this->render('update', array(
-            'model' => $model,
-        ));
-    }
-
-    /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
     public function actionDelete($id) {
-        $this->loadModel($id)->delete();
+        $model = $this->loadModel($id);
+        $lost_photos = LostPhoto::model()->findAll('pet_lost_id = :pet_lost_id', array(':pet_lost_id' => $model->lost_id));
+
+        if (!empty($lost_photos) && count($lost_photos) > 0) {
+            foreach ($lost_photos as $lost_key => $lost_value) {
+                $file = Yii::getPathOfAlias('webroot') . '/uploads/pet_lost/' . $lost_value->photos;
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
+        }
+
+        LostPhoto::model()->deleteAll('pet_lost_id = :pet_lost_id', array(':pet_lost_id' => $model->lost_id));
+
+        $model->delete();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
@@ -175,20 +216,19 @@ class LostController extends Controller {
         }
     }
 
-    
-
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin() {
-        $model = new Lost('search');
-        $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Lost']))
-            $model->attributes = $_GET['Lost'];
-
-        $this->render('admin', array(
-            'model' => $model,
-        ));
+    //AJAX delete lost pet photo one by one
+    public function actionDeleteLostPetPhoto() {
+        if (isset($_POST['lost_photo_id'])) {
+            $lost_pet_photo = LostPhoto::model()->find('lost_photo_id = :lost_photo_id', array(':lost_photo_id' => $_POST['lost_photo_id']));
+            if (!empty($lost_pet_photo)) {
+                $file = Yii::getPathOfAlias('webroot') . '/uploads/pet_lost/' . $lost_pet_photo->photos;
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+                LostPhoto::model()->deleteByPk($_POST['lost_photo_id']);
+                echo "Success";
+            }
+        }exit;
     }
 
     /**

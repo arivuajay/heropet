@@ -19,7 +19,7 @@
                         <div class="input-group">
                             <input class="form-control" placeholder="Email Address" name="newsletterEmail" id="newsletterEmail" type="text">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">Go!</button>
+                                <button class="btn btn-default" type="button">Go!</button>
                             </span>
                         </div>
                     </form>
@@ -67,9 +67,9 @@
                 <div class="col-md-4">
                     <nav id="sub-menu">
                         <ul>
-                            <li><a href="page-faq.html">FAQ's</a></li>
-                            <li><a href="sitemap.html">Sitemap</a></li>
-                            <li><a href="contact-us.html">Contact</a></li>
+                            <li><a href="#">FAQ's</a></li>
+                            <li><a href="#">Sitemap</a></li>
+                            <li><a href="#">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
