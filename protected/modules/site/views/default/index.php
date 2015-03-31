@@ -203,224 +203,48 @@
     <div class="row">
 
         <div class="col-xs-12 col-sm-12 col-md-12">    
-            <div class="heading">  <span> Entlaufene</span> Tiere innerhalb <span> 1 km </span> von 86150 Augsburg, Deutschland</div>
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3"> 
-            <div class="search-result-thumb-cont"> 
-                <div class="dog-name"> <a href="#">RAMSES <br/> 
-                        <span> Louisiana Catahoula Leopard Dog </span></a> </div>
-                <a href="#">
-                    <?php echo CHtml::image("{$this->themeUrl}/img/dog.jpg", 'Porto', array("class" => "img-responsive")) ?>
-                </a>
-            </div>
-            <div class="dog-deatils"> 
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/reward-icon.png", '') ?></div>
-                    <div class="details-txt"> REWARD: 1500 €  </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                    <div class="details-txt"> +49 82131 123456 </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
-                    <div class="details-txt"> München | DE <br/>
-                        15:24   14.März 2015</div>               
-                    <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3"> 
-            <div class="search-result-thumb-cont"> 
-                <div class="dog-name"> <a href="#">RAMSES <br/> 
-                        <span> Louisiana Catahoula Leopard Dog </span></a> </div>
-                <a href="#">
-                    <?php echo CHtml::image("{$this->themeUrl}/img/dog.jpg", 'Porto', array("class" => "img-responsive")) ?>
-                </a>
-            </div>
-            <div class="dog-deatils"> 
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/reward-icon.png", '') ?></div>
-                    <div class="details-txt"> REWARD: 1500 €  </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                    <div class="details-txt"> +49 82131 123456 </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
-                    <div class="details-txt"> München | DE <br/>
-                        15:24   14.März 2015</div>               
-                    <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3"> 
-            <div class="search-result-thumb-cont"> 
-                <div class="dog-name"> <a href="#">RAMSES <br/> 
-                        <span> Louisiana Catahoula Leopard Dog </span></a> </div>
-                <a href="#">
-                    <?php echo CHtml::image("{$this->themeUrl}/img/dog.jpg", 'Porto', array("class" => "img-responsive")) ?>
-                </a>
-            </div>
-            <div class="dog-deatils"> 
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/reward-icon.png", '') ?></div>
-                    <div class="details-txt"> REWARD: 1500 €  </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                    <div class="details-txt"> +49 82131 123456 </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
-                    <div class="details-txt"> München | DE <br/>
-                        15:24   14.März 2015</div>               
-                    <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3"> 
-            <div class="search-result-thumb-cont"> 
-                <div class="dog-name"> <a href="#">RAMSES <br/> 
-                        <span> Louisiana Catahoula Leopard Dog </span></a> </div>
-                <a href="#">
-                    <?php echo CHtml::image("{$this->themeUrl}/img/dog.jpg", 'Porto', array("class" => "img-responsive")) ?>
-                </a>
-            </div>
-            <div class="dog-deatils"> 
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/reward-icon.png", '') ?></div>
-                    <div class="details-txt"> REWARD: 1500 €  </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                    <div class="details-txt"> +49 82131 123456 </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
-                    <div class="details-txt"> München | DE <br/>
-                        15:24   14.März 2015</div>               
-                    <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
-                </div>
-            </div>
-        </div>
-
-        <div class="viewmore"> <a href="#">View more results </a></div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12">    
             <div class="heading">  
-                <span> Entlaufene </span> Tiere innerhalb <span> 1 km </span> von 86150 Augsburg, Deutschland
+<!--                <span> Entlaufene </span> Tiere innerhalb <span> 1 km </span> von 86150 Augsburg, Deutschland-->
+                Lost Pets
             </div>
         </div>
+        
+        <?php 
+        $lost_pets = Lost::model()->findAll('status = :status', array(':status' => '1')); 
+        
+        foreach($lost_pets as $lost_pet){
+            $lost_pet_photo = LostPhoto::model()->getLostPetPhoto($lost_pet->lost_id);
+        ?>
 
         <div class="col-xs-12 col-sm-6 col-md-3"> 
             <div class="search-result-thumb-cont"> 
-                <div class="dog-name"> <a href="#">RAMSES <br/> 
-                        <span> Louisiana Catahoula Leopard Dog </span></a> </div>
+                <div class="dog-name"> <a href="#"><?php echo $lost_pet->pet_name; ?> <br/> 
+                        <span> <?php echo $lost_pet->breed; ?>  </span></a> </div>
                 <a href="#">
-                    <?php echo CHtml::image("{$this->themeUrl}/img/dog.jpg", 'Porto', array("class" => "img-responsive")) ?>
+                    <?php echo CHtml::image(Yii::app()->request->baseUrl . '/uploads/pet_lost/' . $lost_pet_photo->photos, $lost_pet_photo->photos, array("class" => "img-responsive")); ?>
                 </a>
             </div>
             <div class="dog-deatils"> 
                 <div class="dog-details-row">
                     <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/reward-icon.png", '') ?></div>
-                    <div class="details-txt"> REWARD: 1500 €  </div>                        
+                    <div class="details-txt"> REWARD: <?php echo $lost_pet->reward; ?>  €  </div>                        
                 </div>
-                <div class="dog-details-row">
+<!--                <div class="dog-details-row">
                     <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
                     <div class="details-txt"> +49 82131 123456 </div>                        
-                </div>
+                </div>-->
                 <div class="dog-details-row">
                     <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
-                    <div class="details-txt"> München | DE <br/>
-                        15:24   14.März 2015</div>               
+                    <div class="details-txt">  
+                        <?php echo $lost_pet->lost_address; ?> <br/>
+                        <?php echo $lost_pet->date_of_missing; ?>
+                    </div>               
                     <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
                 </div>
             </div>
         </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3"> 
-            <div class="search-result-thumb-cont"> 
-                <div class="dog-name"> <a href="#">RAMSES <br/> 
-                        <span> Louisiana Catahoula Leopard Dog </span></a> </div>
-                <a href="#">
-                    <?php echo CHtml::image("{$this->themeUrl}/img/dog.jpg", 'Porto', array("class" => "img-responsive")) ?>
-                </a>
-            </div>
-            <div class="dog-deatils"> 
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/reward-icon.png", '') ?></div>
-                    <div class="details-txt"> REWARD: 1500 €  </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                    <div class="details-txt"> +49 82131 123456 </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
-                    <div class="details-txt"> München | DE <br/>
-                        15:24   14.März 2015</div>               
-                    <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3"> 
-            <div class="search-result-thumb-cont"> 
-                <div class="dog-name"> <a href="#">RAMSES <br/> 
-                        <span> Louisiana Catahoula Leopard Dog </span></a> </div>
-                <a href="#">
-                    <?php echo CHtml::image("{$this->themeUrl}/img/dog.jpg", 'Porto', array("class" => "img-responsive")) ?>
-                </a>
-            </div>
-            <div class="dog-deatils"> 
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/reward-icon.png", '') ?></div>
-                    <div class="details-txt"> REWARD: 1500 €  </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                    <div class="details-txt"> +49 82131 123456 </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
-                    <div class="details-txt"> München | DE <br/>
-                        15:24   14.März 2015</div>               
-                    <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3"> 
-            <div class="search-result-thumb-cont"> 
-                <div class="dog-name"> <a href="#">RAMSES <br/> 
-                        <span> Louisiana Catahoula Leopard Dog </span></a> </div>
-                <a href="#">
-                    <?php echo CHtml::image("{$this->themeUrl}/img/dog.jpg", 'Porto', array("class" => "img-responsive")) ?>
-                </a>
-            </div>
-            <div class="dog-deatils"> 
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/reward-icon.png", '') ?></div>
-                    <div class="details-txt"> REWARD: 1500 €  </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                    <div class="details-txt"> +49 82131 123456 </div>                        
-                </div>
-                <div class="dog-details-row">
-                    <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
-                    <div class="details-txt"> München | DE <br/>
-                        15:24   14.März 2015</div>               
-                    <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
-                </div>
-            </div>
-        </div>
+        
+        <?php } ?>
 
         <div class="viewmore"> <a href="#">View more results </a></div>
 

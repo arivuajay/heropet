@@ -120,5 +120,10 @@ class LostPhoto extends CActiveRecord {
         $lost_pet_photos = $this->model()->findAll('pet_lost_id = :pet_lost_id', array(':pet_lost_id' => $lost_pet_id));
         return $lost_pet_photos;
     }
+    
+    public function getLostPetPhoto($lost_pet_id){
+        $lost_pet_photo = $this->model()->find('pet_lost_id = :pet_lost_id', array(':pet_lost_id' => $lost_pet_id));
+        return $lost_pet_photo;
+    }
 
 }

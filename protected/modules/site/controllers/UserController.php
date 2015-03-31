@@ -107,7 +107,7 @@ class UserController extends Controller {
                         $mail->send($model->email, $subject, $message);
                     endif;
 
-                    Yii::app()->user->setFlash('success', 'User Registered Successfully!!!');
+                    Yii::app()->user->setFlash('success', 'Registered Completed Successfully!!!, Your login details has been sent to your e-mail.');
                     $this->redirect(array('login'));
                 }
             }
