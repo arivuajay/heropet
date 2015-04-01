@@ -78,7 +78,7 @@ EOD
     }
 
     protected function getIPInfo($ip) {
-        return unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip));
+        return unserialize(@file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip));
     }
 
 }
