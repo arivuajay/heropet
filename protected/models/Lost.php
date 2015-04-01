@@ -54,7 +54,7 @@ class Lost extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('pet_category_id, pet_name, breed, date_of_missing, lost_address, pet_user_id, pet_ad_package_id, reward', 'required'),
-            array('latitude', 'required', 'message'=>'Can not find your location, Please enter correct address'),
+            array('latitude', 'required', 'message' => 'Can not find your location, Please enter correct address'),
             array('pet_category_id, age, pet_country_id, pet_state_id, pet_city_id, pet_user_id, pet_ad_package_id', 'numerical', 'integerOnly' => true),
             array('latitude, longitude', 'numerical'),
             array('pet_name, breed', 'length', 'max' => 500),
@@ -62,7 +62,6 @@ class Lost extends CActiveRecord {
             array('sex, chipped, castrated, sterilized, status', 'length', 'max' => 1),
             array('weight, reward', 'length', 'max' => 10),
             array('additional_informations', 'safe'),
-            
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('lost_id, pet_category_id, pet_name, breed, eye_color, furcolor, sex, age, weight, chipped, castrated, sterilized, date_of_missing, lost_address, latitude, longitude, pet_country_id, pet_state_id, pet_city_id, additional_informations, reward, pet_user_id, pet_ad_package_id, status, created, updated', 'safe', 'on' => 'search'),
@@ -183,7 +182,7 @@ class Lost extends CActiveRecord {
             )
         ));
     }
-    
+
     public function beforeSave() {
         if ($this->isNewRecord)
             $this->created = new CDbExpression('NOW()');
@@ -191,6 +190,33 @@ class Lost extends CActiveRecord {
         $this->updated = new CDbExpression('NOW()');
 
         return parent::beforeSave();
+    }
+
+    public function getLostPetsByDistance($lat, $lng, $distance = '< 10') {
+        //If you want search distance in kms, use 6371 in below query.
+        //If you want search distance in miles, use 3959 in below query.
+        $sql = "SELECT *, 
+                ( 6371 * acos( cos( radians({$lat}) ) 
+                               * cos( radians( latitude ) ) 
+                               * cos( radians( longitude ) 
+                                   - radians({$lng}) ) 
+                               + sin( radians({$lat}) ) 
+                               * sin( radians( latitude ) ) 
+                             )
+               ) AS distance 
+            FROM pet_lost 
+            HAVING distance {$distance}
+            ORDER BY distance LIMIT 0 , 4;";
+        $command = Yii::app()->db->createCommand($sql);
+        $results = $command->queryAll();
+        return $results;
+    }
+    
+    public function getLostPets(){
+        $sql = "SELECT * FROM pet_lost LIMIT 0 , 4;";
+        $command = Yii::app()->db->createCommand($sql);
+        $results = $command->queryAll();
+        return $results;
     }
 
 }

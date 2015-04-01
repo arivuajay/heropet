@@ -23,7 +23,7 @@
         $cs->registerCssFile($themeUrl . '/css/theme-elements.css');
         $cs->registerCssFile($themeUrl . '/css/skins/default.css');
         ?>
-        
+
         <?php
 //        $cs->registerCssFile($themeUrl . '/css/custom.css');
 //        $cs->registerScriptFile($themeUrl . '/vendor/modernizr/modernizr.js');
@@ -63,13 +63,15 @@
         <!-- Vendor -->
         <?php
         $cs->registerCoreScript('jquery');
+        
+        $cs->registerScriptFile($themeUrl . '/js/jquery.cookie.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/vendor/bootstrap/bootstrap.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/vendor/common/common.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/theme.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/custom.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/theme.init.js', $cs_pos_end);
         ?>
-        
+
         <?php
 //        $cs->registerScriptFile($themeUrl . '/vendor/jquery/jquery.js', $cs_pos_end);
 //        $cs->registerScriptFile($themeUrl . '/vendor/jquery.appear/jquery.appear.js', $cs_pos_end);
@@ -94,7 +96,7 @@
         $cs->registerCssFile($themeUrl . '/jqtransform.css');
         $cs->registerScriptFile($themeUrl . '/jquery.jqtransform.js', $cs_pos_end);
         $cs->registerScript('jqtransform-script', <<<EOD
-    $(function() {
+            $(function() {
                 $('form.jqtransform').jqTransform({imgPath: 'jqtransformplugin/img/'});
             });
 EOD

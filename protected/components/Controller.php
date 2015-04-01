@@ -16,7 +16,6 @@ class Controller extends CController {
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
      */
     public $menu = array();
-
     protected $homeUrl = array('/admin/default/index');
 
     /**
@@ -27,17 +26,59 @@ class Controller extends CController {
     public $breadcrumbs = array();
     public $flashMessages = array();
     public $themeUrl = '';
-    public $title  = '';
+    public $title = '';
 
     public function init() {
         CHtml::$errorSummaryCss = 'alert alert-danger';
 
         $this->flashMessages = Yii::app()->user->getFlashes();
         $this->themeUrl = Yii::app()->theme->baseUrl;
+
+        if (!isset($_COOKIE['hpet_geo_loc']))
+            $this->setIPLocation();
+
+        if (@$_COOKIE['hpet_geo_loc'] != 'true')
+            $this->setGeoLocation();
+
         parent::init();
     }
 
     public function goHome() {
         $this->redirect($this->homeUrl);
     }
+
+    protected function setGeoLocation() {
+        Yii::app()->getClientScript()->registerScript('geo-script', <<<EOD
+                $(document).ready(function() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else {
+                        alert("Geolocation is not supported by this browser.");
+                    }
+                });
+
+                function showPosition(position) {
+                    $.cookie("hpet_geo_lat", position.coords.latitude); 
+                    $.cookie("hpet_geo_lng", position.coords.longitude); 
+                    $.cookie("hpet_geo_loc", "true"); 
+                    window.location.reload();
+                }
+EOD
+        );
+    }
+
+    protected function setIPLocation() {
+        $ip = Yii::app()->request->getUserHostAddress();
+        //$ip = '122.174.91.122';
+        $position = $this->getIPInfo($ip);
+        setcookie('hpet_geo_lat', $position ['geoplugin_latitude']);
+        setcookie('hpet_geo_lng', $position ['geoplugin_longitude']);
+        setcookie('hpet_geo_loc', 'false');
+        $this->refresh();
+    }
+
+    protected function getIPInfo($ip) {
+        return unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip));
+    }
+
 }
