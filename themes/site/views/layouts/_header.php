@@ -1,10 +1,8 @@
 <header id="header">
     <div class="container">
         <div class="logo">
-            <a href="index.html">
-                <?php echo CHtml::link(CHtml::image("{$this->themeUrl}/img/logo.png", 'Porto', array("width"=>290, "height"=>93, "data-sticky-width"=>150, "data-sticky-height"=>48)), array('/'));
-                 ?>
-            </a>
+            <?php echo CHtml::link(CHtml::image("{$this->themeUrl}/img/logo.png", 'HeroPet', array("width" => 290, "height" => 93, "data-sticky-width" => 150, "data-sticky-height" => 48)), array('/'));
+            ?>
         </div>
         <div class="search">
             <form id="searchForm" action="page-search-results.html" method="get">
@@ -42,39 +40,14 @@
             </ul>
             <nav class="nav-main mega-menu">
                 <ul class="nav nav-pills nav-main" id="mainMenu">
-<!--                    <li class="dropdown active">
-                        <a class="dropdown-toggle" href="index.html">
-                            LOST & FOUND										<i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="index.html">Cat </a></li>
-                            <li><a href="index-1.html">dog <span class="tip">hot</span></a></li>
-                        </ul>
-                    </li>-->
                     <?php if (Yii::app()->user->isGuest) { ?>
-                    <li>
-                        <?php echo CHtml::link('Register <i class="fa fa-angle-down"></i>',array('/site/user/register')); ?>
-                    </li>
-
-                    <li>
-                        <?php echo CHtml::link('Login <i class="fa fa-angle-down"></i>',array('/site/user/login')); ?>
-                    </li>
+                        <li><?php echo CHtml::link('Register <i class="fa fa-angle-down"></i>', array('/site/user/register')); ?></li>
+                        <li><?php echo CHtml::link('Login <i class="fa fa-angle-down"></i>', array('/site/user/login')); ?></li>
                     <?php } else { ?>
-                    <li>
-                        <?php echo CHtml::link('Lost Pets <i class="fa fa-angle-down"></i>',array('/site/lost')); ?>
-                    </li>
-                    
-                    <li>
-                        <?php echo CHtml::link('Profile <i class="fa fa-angle-down"></i>',array('/site/user/profile')); ?>
-                    </li>
-                    
-                    <li>
-                        <?php echo CHtml::link('Change Password<i class="fa fa-angle-down"></i>',array('/site/user/resetpassword')); ?>
-                    </li>
-
-                    <li>
-                        <?php echo CHtml::link('Logout <i class="fa fa-angle-down"></i>',array('/site/user/logout')); ?>
-                    </li>
+                        <li><?php echo CHtml::link('Lost Pets <i class="fa fa-angle-down"></i>', array('/site/lost')); ?></li>
+                        <li><?php echo CHtml::link('Profile <i class="fa fa-angle-down"></i>', array('/site/user/profile')); ?></li>
+                        <li><?php echo CHtml::link('Change Password<i class="fa fa-angle-down"></i>',array('/site/user/resetpassword')); ?></li>
+                        <li><?php echo CHtml::link('Logout <i class="fa fa-angle-down"></i>', array('/site/user/logout')); ?></li>
                     <?php } ?>
                 </ul>
             </nav>

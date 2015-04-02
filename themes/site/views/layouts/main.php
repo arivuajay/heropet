@@ -15,7 +15,6 @@
         <!-- Web Fonts  -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">
 
-        <!-- Vendor CSS -->
         <?php
         $cs->registerCssFile($themeUrl . '/vendor/bootstrap/bootstrap.css');
         $cs->registerCssFile($themeUrl . '/vendor/fontawesome/css/font-awesome.css');
@@ -23,6 +22,15 @@
         $cs->registerCssFile($themeUrl . '/css/theme-elements.css');
         $cs->registerCssFile($themeUrl . '/css/skins/default.css');
         ?>
+
+        <!--[if IE]>
+            <link rel="stylesheet" href="<?php echo $themeUrl; ?>/css/ie.css">
+        <![endif]-->
+
+        <!--[if lte IE 8]>
+            <script src="<?php echo $themeUrl; ?>/vendor/respond/respond.js"></script>
+            <script src="<?php echo $themeUrl; ?>/vendor/excanvas/excanvas.js"></script>
+        <![endif]-->
 
         <?php
 //        $cs->registerCssFile($themeUrl . '/css/custom.css');
@@ -36,16 +44,6 @@
 //        $cs->registerCssFile($themeUrl . '/vendor/rs-plugin/css/settings.css', 'screen');
 //        $cs->registerCssFile($themeUrl . '/vendor/circle-flip-slideshow/css/component.css', 'screen');
         ?>
-
-        <!--[if IE]>
-                <link rel="stylesheet" href="<?php echo $themeUrl; ?>/css/ie.css">
-        <![endif]-->
-
-        <!--[if lte IE 8]>
-                <script src="<?php echo $themeUrl; ?>/vendor/respond/respond.js"></script>
-                <script src="<?php echo $themeUrl; ?>/vendor/excanvas/excanvas.js"></script>
-        <![endif]-->
-
     </head>
     <body>
         <div class="body">
@@ -58,18 +56,25 @@
 
         <?php
         $cs_pos_end = CClientScript::POS_END;
-        ?>
 
-        <!-- Vendor -->
-        <?php
         $cs->registerCoreScript('jquery');
-        
+
         $cs->registerScriptFile($themeUrl . '/js/jquery.cookie.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/vendor/bootstrap/bootstrap.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/vendor/common/common.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/theme.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/custom.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/theme.init.js', $cs_pos_end);
+
+        $cs->registerCssFile($themeUrl . '/jqtransform.css');
+        $cs->registerScriptFile($themeUrl . '/jquery.jqtransform.js', $cs_pos_end);
+
+        $cs->registerScript('jqtransform-script', <<<EOD
+            $(function() {
+                $('form.jqtransform').jqTransform({imgPath: 'jqtransformplugin/img/'});
+            });
+EOD
+        );
         ?>
 
         <?php
@@ -90,17 +95,6 @@
 //        $cs->registerScriptFile($themeUrl . '/vendor/rs-plugin/js/jquery.themepunch.revolution.min.js', $cs_pos_end);
 //        $cs->registerScriptFile($themeUrl . '/vendor/circle-flip-slideshow/js/jquery.flipshow.js', $cs_pos_end);
 //        $cs->registerScriptFile($themeUrl . '/js/views/view.home.js', $cs_pos_end);
-        ?>
-
-        <?php
-        $cs->registerCssFile($themeUrl . '/jqtransform.css');
-        $cs->registerScriptFile($themeUrl . '/jquery.jqtransform.js', $cs_pos_end);
-        $cs->registerScript('jqtransform-script', <<<EOD
-            $(function() {
-                $('form.jqtransform').jqTransform({imgPath: 'jqtransformplugin/img/'});
-            });
-EOD
-        );
         ?>
     </body>
 </html>

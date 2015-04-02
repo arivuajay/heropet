@@ -2,8 +2,10 @@
 $whitelist = array('127.0.0.1', '::1');
 if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
     $mailsendby = 'smtp';
+    $test_ip = '122.174.91.122';
 } else {
     $mailsendby = 'phpmail';
+    $test_ip = Yii::app()->request->getUserHostAddress();
 }
 
 // Custom Params Value
@@ -31,5 +33,7 @@ return array(
     'PAGE_SIZE' => '10',
     
     'EMAILHEADERIMAGE' => '',
+    
+    'IPADDRESS' => $test_ip,
 );
 

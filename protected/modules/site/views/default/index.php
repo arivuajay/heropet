@@ -16,7 +16,7 @@
             </div>
             <div class="col-md-2">
                 <div class="get-started">
-                    <a href="#" class="btn btn-lg btn-primary"> I LOST MY PET</a>
+                    <?php echo CHtml::link('I LOST MY PET', array('/site/lost/create'), array("class" => "btn btn-lg btn-primary")); ?>
                 </div>
             </div>
             <div class="col-md-2">
@@ -69,24 +69,27 @@
 <div class="container">
 
     <div class="row">
-
         <div class="col-xs-12 col-sm-12 col-md-12">    
             <div class="heading">  
-<!--                <span> Entlaufene </span> Tiere innerhalb <span> 1 km </span> von 86150 Augsburg, Deutschland-->
-                Lost Pets
+                <?php echo $lost_pet_msg; ?>
             </div>
         </div>
 
         <?php
         if (!empty($lost_pets)) {
             foreach ($lost_pets as $lost_pet) {
+                $lost_pet_user = User::model()->findByPk($lost_pet['pet_user_id']);
+                $lost_pet_user_profile = UserProfile::model()->find('pet_user_id = :pet_user_id', array(':pet_user_id' => $lost_pet['pet_user_id']));
                 $lost_pet_photo = LostPhoto::model()->getLostPetPhoto($lost_pet['lost_id']);
                 ?>
 
                 <div class="col-xs-12 col-sm-6 col-md-3"> 
                     <div class="search-result-thumb-cont"> 
-                        <div class="dog-name"> <a href="#"><?php echo $lost_pet['pet_name']; ?> <br/> 
-                                <span> <?php echo $lost_pet['breed']; ?>  </span></a> </div>
+                        <div class="dog-name"> 
+                            <a href="#"><?php echo $lost_pet['pet_name']; ?> <br/> 
+                                <span> <?php echo $lost_pet['breed']; ?>  </span>
+                            </a> 
+                        </div>
                         <a href="#">
                             <?php if (!empty($lost_pet_photo) && isset($lost_pet_photo->photos)) { ?>
                                 <?php echo CHtml::image(Yii::app()->request->baseUrl . '/uploads/pet_lost/' . $lost_pet_photo->photos, $lost_pet_photo->photos, array("class" => "img-responsive")); ?>
@@ -100,13 +103,20 @@
                         </div>
                         <div class="dog-details-row">
                             <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                            <div class="details-txt"> +49 82131 123456 </div>                        
+                            <div class="details-txt"><?php echo $lost_pet_user_profile->user_phone; ?></div>                        
                         </div>
                         <div class="dog-details-row">
                             <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
                             <div class="details-txt">  
-                                <?php echo $lost_pet['lost_address']; ?> <br/>
-                                <?php echo $lost_pet['date_of_missing']; ?>
+                                <?php 
+                                $address = new EasyGoogleMap();
+                                $address_detail = $address->getCurrentPosition($lost_pet['lost_address']);
+                                echo $address_detail['city'] . ',' . $address_detail['country']
+                                ?>
+                               <br/>
+                                <?php 
+                                echo date("H:i", strtotime($lost_pet['date_of_missing'])) . ' ' . date("d.M Y", strtotime($lost_pet['date_of_missing']));
+                                ?>
                             </div>               
                             <div class="small-logo"><?php echo CHtml::image("{$this->themeUrl}/img/small-logo.png", '') ?></div>         
                         </div>
@@ -118,11 +128,5 @@
         }
         ?>
         <div class="viewmore"> <a href="#">View more results </a></div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <hr class="tall" />
     </div>
 </div>

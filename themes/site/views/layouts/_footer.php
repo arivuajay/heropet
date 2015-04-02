@@ -57,9 +57,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-1">
-                    <a href="index.html" class="logo">
-                        <?php echo CHtml::image("{$this->themeUrl}/img/logo-footer.png", 'Porto Website Template', array("class"=>"img-responsive")) ?>
-                    </a>
+                    <?php echo CHtml::link(CHtml::image("{$this->themeUrl}/img/logo-footer.png", 'Porto Website Template', array("class" => "img-responsive")), array('/'));
+            ?>
                 </div>
                 <div class="col-md-7">
                     <p>© Copyright 2015. All Rights Reserved.</p>
