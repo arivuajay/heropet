@@ -68,8 +68,8 @@ EOD
     }
 
     protected function setIPLocation() {
-        $ip = Yii::app()->request->getUserHostAddress();
-        //$ip = '122.174.91.122';
+//        $ip = Yii::app()->request->getUserHostAddress();
+        $ip = '122.174.91.122';
         $position = $this->getIPInfo($ip);
         setcookie('hpet_geo_lat', $position ['geoplugin_latitude']);
         setcookie('hpet_geo_lng', $position ['geoplugin_longitude']);

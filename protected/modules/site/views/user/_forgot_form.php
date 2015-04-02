@@ -2,11 +2,6 @@
 /* @var $this UserController */
 /* @var $model User */
 /* @var $form CActiveForm */
-
-$this->title = 'Login User';
-$this->breadcrumbs = array(
-    $this->title,
-);
 ?>
 
 <div class="container">
@@ -18,11 +13,12 @@ $this->breadcrumbs = array(
                 <div class="col-sm-12">
                     <div class="featured-box featured-box-secundary default info-content">
                         <div class="box-content">
-                            <h4>Login</h4>
+                            <h4>Forgot Password</h4>
                             <?php
                             $form = $this->beginWidget('CActiveForm', array(
-                                'id' => 'login-form',
+                                'id' => 'forgot-form',
                                 'htmlOptions' => array(
+                                    'enctype' => 'multipart/form-data',
                                     'class' => 'form-horizontal form-bordered'
                                 ),
                                 'clientOptions' => array(
@@ -40,20 +36,11 @@ $this->breadcrumbs = array(
                                     <?php echo $form->error($model, 'email'); ?>
                                 </div>
                             </div>
-
+                            
+                          
                             <div class="form-group">
-                                <?php echo $form->labelEx($model, 'password', array("class" => "col-md-3 control-label")); ?>
-                                <div class="col-md-6">
-                                    <?php echo $form->passwordField($model, 'password', array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'password'); ?>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-
                                 <div class="col-md-9">
-                                    <?php echo CHtml::link('Forgot Password ', array('/site/user/forgot')); ?>                                   
-                                    <?php echo CHtml::submitButton('Login', array('class' => 'btn btn-primary pull-right push-bottom')); ?>
+                                    <?php echo CHtml::submitButton('Forgot Password', array('class' => 'btn btn-primary pull-right push-bottom','name' => 'forgot')); ?>
                                 </div>
                             </div>
                             <?php $this->endWidget(); ?>

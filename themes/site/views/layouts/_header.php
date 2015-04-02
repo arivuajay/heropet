@@ -67,6 +67,10 @@
                     <li>
                         <?php echo CHtml::link('Profile <i class="fa fa-angle-down"></i>',array('/site/user/profile')); ?>
                     </li>
+                    
+                    <li>
+                        <?php echo CHtml::link('Change Password<i class="fa fa-angle-down"></i>',array('/site/user/resetpassword')); ?>
+                    </li>
 
                     <li>
                         <?php echo CHtml::link('Logout <i class="fa fa-angle-down"></i>',array('/site/user/logout')); ?>

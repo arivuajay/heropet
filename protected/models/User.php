@@ -25,6 +25,10 @@ class User extends CActiveRecord {
     public $new_password;
     public $confirm_password;
     
+    public $currentpassword;
+    public $sitenew_password;
+    public $siteconfirm_password;
+    
     public $role_search;
 
     /**
@@ -51,6 +55,9 @@ class User extends CActiveRecord {
             array('new_password, confirm_password', 'required', 'on' => 'reset'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
+            array('currentpassword, sitenew_password, siteconfirm_password', 'required', 'on' => 'resetpassword'),
+            array('currentpassword', 'equalPasswords', 'on' => 'resetpassword'),
+            array('siteconfirm_password', 'compare', 'compareAttribute' => 'sitenew_password', 'on' => 'resetpassword'),
             array('id, password_hash, password_reset_token, email, role_search, status, created_at, updated_at, confirm_password, new_password', 'safe', 'on' => 'search'),
         );
     }
@@ -67,6 +74,15 @@ class User extends CActiveRecord {
         );
     }
 
+    
+      public function equalPasswords($attribute, $params) {
+        if ($this->$attribute) {
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            if ($this->$attribute != "" && $user->password_hash != Myclass::encrypt($this->$attribute)) {
+                $this->addError($attribute, 'Current password is incorrect.');
+            }
+        }
+    }
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -80,6 +96,9 @@ class User extends CActiveRecord {
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'currentpassword' => 'Current Password',
+            'sitenew_password' => 'New Password',
+            'siteconfirm_password' => 'Confirm Password',
         );
     }
 

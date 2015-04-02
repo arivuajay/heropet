@@ -24,11 +24,11 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'register' actions
-                'actions' => array('register', 'login'),
+                'actions' => array('register', 'login', 'forgot', 'reset'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('profile', 'logout'),
+                'actions' => array('profile', 'logout', 'resetpassword'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -213,18 +213,128 @@ class UserController extends Controller {
         $this->redirect(array('login'));
     }
 
-    /**
-     * Returns the data model based on the primary key given in the GET variable.
-     * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
-     * @return User the loaded model
-     * @throws CHttpException
-     */
-    public function loadModel($id) {
+    public function actionResetpassword() {
+        $id = Yii::app()->user->id;
         $model = User::model()->findByPk($id);
-        if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
-        return $model;
+        $model->setScenario('resetpassword');
+//         print_r($_POST);
+        $this->performAjaxValidation($model);
+//         exit;
+        if (isset($_POST['User'])) {
+            $model->attributes = $_POST['User'];
+            if ($model->validate()) {
+                $model->password_hash = Myclass::encrypt($_POST['User']['sitenew_password']);
+                $model->save(false);
+                Yii::app()->user->setFlash('success', 'Password has been reset successfully');
+                $this->refresh();
+            }
+        }
+
+        $this->render('reset_password', array(
+            'model' => $model,
+        ));
+    }
+
+    public function actionForgot() {
+        if (!Yii::app()->user->isGuest)
+            $this->redirect(array('/'));
+        $model = new User();
+        $model->setScenario('forgotpassword');
+        $this->performAjaxValidation($model);
+
+        if (isset($_POST['forgot'])) {
+            $model->attributes = $_POST['User'];
+            if ($model->validate()) {
+                $user = User::model()->findByAttributes(array('email' => $_POST['User']['email']));
+                if (empty($user)) {
+                    Yii::app()->user->setFlash('danger', 'This Email Address Not Exists!!!');
+                    $this->refresh();
+                } else {
+                    $reset_link = Myclass::getRandomString(25);
+                    $user->setAttribute('password_reset_token', $reset_link);
+                    $user->setAttribute('updated_at', strtotime(date('Y-m-d H:i:s')));
+                    $user->save(false);
+
+                    ///////////////////////
+                    $time_valid = date('Y-m-d H:i:s');
+                    $resetlink = Yii::app()->createAbsoluteUrl('/site/user/reset?str=' . $user->password_reset_token . '&id=' . $user->id);
+                    if (!empty($user->email)):
+                        $mail = new Sendmail;
+                        $trans_array = array(
+                            "{SITENAME}" => SITENAME,
+                            "{USERNAME}" => 'User',
+                            "{EMAIL_ID}" => $user->email,
+                            "{NEXTSTEPURL}" => $resetlink,
+                            "{TIMEVALID}" => $time_valid,
+                        );
+                        $message = $mail->getMessage('forgot_password', $trans_array);
+                        $Subject = $mail->translate('{SITENAME}: Reset Password');
+                        $mail->send($user->email, $Subject, $message);
+                    endif;
+
+                    Yii::app()->user->setFlash('success', "Your Password Reset Link sent to your email address.");
+                    $this->redirect(array('/site/user/login'));
+                }
+            }
+        }
+
+        $this->render('forgot', array('model' => $model));
+    }
+
+    public function actionReset($str, $id) {
+
+        if (!Yii::app()->user->isGuest)
+            $this->redirect(array('/'));
+
+        $model = $this->loadModel($id);
+
+        if (empty($model) || $model->password_reset_token != $str) {
+            Yii::app()->user->setFlash('danger', "Not a valid Reset Link");
+            $this->redirect(array('/site/user/login'));
+        } else {
+            $start = strtotime($model->updated_at);
+            $end = strtotime(date('Y-m-d H:i:s'));
+            $seconds = $end - $start;
+            $days = floor($seconds / 86400);
+            $hours = floor(($seconds - ($days * 86400)) / 3600);
+            $minutes = floor(($seconds - ($days * 86400) - ($hours * 3600)) / 60);
+
+            if ($minutes > 5) {
+                Yii::app()->user->setFlash('danger', "This Reset Link Expired. Please Try again.");
+                $this->redirect(array('/site/user/forgot'));
+            }
+        }
+        $model->setScenario('reset');
+        $this->performAjaxValidation($model);
+
+        if (isset($_POST['reset'])) {
+            $model->attributes = $_POST['User'];
+            if ($model->validate()) {
+                $model->setAttribute('password_hash', Myclass::encrypt($_POST['User']['new_password']));
+                $model->setAttribute('password_reset_token', '');
+                $model->save(false);
+                Yii::app()->user->setFlash('success', "Your Password Changed Successfully.");
+                $this->redirect(array('/site/user/login'));
+            }
+        }
+
+        $this->render('reset', array('model' => $model));
+    }
+
+
+
+/**
+ * Returns the data model based on the primary key given in the GET variable.
+ * If the data model is not found, an HTTP exception will be raised.
+ * @param integer $id the ID of the model to be loaded
+ * @return User the loaded model
+ * @throws CHttpException
+ */
+public function loadModel($id) {
+    $model = User::model()->findByPk($id);
+    if ($model === null)
+        throw new CHttpException(404, 'The requested page does not exist.');
+    return $model;
     }
 
     /**
@@ -232,7 +342,7 @@ class UserController extends Controller {
      * @param User $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        $forms = array('login-form', 'user-form');
+        $forms = array('login-form', 'user-form', 'user-reset', 'forgot-form','reset-form');
         if (isset($_POST['ajax']) && in_array($_POST['ajax'], $forms)) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
