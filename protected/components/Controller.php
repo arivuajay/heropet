@@ -69,14 +69,29 @@ EOD
 
     protected function setIPLocation() {
         $position = $this->getIPInfo(IPADDRESS);
-        setcookie('hpet_geo_lat', $position ['geoplugin_latitude']);
-        setcookie('hpet_geo_lng', $position ['geoplugin_longitude']);
+        setcookie('hpet_geo_lat', $position ['latitude']);
+        setcookie('hpet_geo_lng', $position ['longitude']);
         setcookie('hpet_geo_loc', 'false');
         $this->refresh();
     }
 
     protected function getIPInfo($ip) {
-        return unserialize(@file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip));
+        $location = Yii::app()->geoip->lookupLocation($ip);
+        $data = array(
+            'ip' => $ip,
+            'countryCode' => $location->countryCode,
+            'countryCode3' => $location->countryCode3,
+            'countryName' => $location->countryName,
+            'region' => $location->region,
+            'regionName' => $location->regionName,
+            'city' => $location->city,
+            'postalCode' => $location->postalCode,
+            'latitude' => $location->latitude,
+            'longitude' => $location->longitude,
+            'areaCode' => $location->areaCode,
+            'dmaCode' => $location->dmaCode,
+        );
+        return $data;
     }
 
 }

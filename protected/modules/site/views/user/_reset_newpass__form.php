@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <?php echo $form->labelEx($model, 'new_password', array("class" => "col-md-3 control-label")); ?>
                                 <div class="col-md-6">
-                                    <?php echo $form->textField($model, 'new_password', array('class' => 'form-control')); ?>
+                                    <?php echo $form->passwordField($model, 'new_password', array('class' => 'form-control')); ?>
                                     <?php echo $form->error($model, 'new_password'); ?>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                             <div class="form-group">
                                 <?php echo $form->labelEx($model, 'confirm_password', array("class" => "col-md-3 control-label")); ?>
                                 <div class="col-md-6">
-                                    <?php echo $form->textField($model, 'confirm_password', array('class' => 'form-control')); ?>
+                                    <?php echo $form->passwordField($model, 'confirm_password', array('class' => 'form-control')); ?>
                                     <?php echo $form->error($model, 'confirm_password'); ?>
                                 </div>
                             </div>

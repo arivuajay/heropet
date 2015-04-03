@@ -166,9 +166,9 @@ class User extends CActiveRecord {
 
     public function beforeSave() {
         if ($this->isNewRecord)
-            $this->created_at = new CDbExpression('NOW()');
+            $this->created_at = date('Y-m-d H:i:s');
 
-        $this->updated_at = new CDbExpression('NOW()');
+        $this->updated_at = date('Y-m-d H:i:s');
 
         return parent::beforeSave();
     }

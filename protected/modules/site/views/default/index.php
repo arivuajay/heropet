@@ -34,7 +34,8 @@
             <div class="row"> 
                 <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
                     <?php echo CHtml::image("{$this->themeUrl}/img/map-icon.png") ?>
-                    <input name="" type="text" class="map-field" value="PLZ oder Ort eingeben"> </div>
+                    <input name="" type="text" class="map-field" id="searchTextField" autocomplete="on" placeholder="PLZ oder Ort eingeben"> 
+                </div>
 
                 <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
                     <?php echo CHtml::image("{$this->themeUrl}/img/filter-icon.png") ?>
@@ -46,7 +47,6 @@
                 </div>
 
                 <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
-
 
                     <label>Species :</label>
                     <select name="select">
@@ -108,13 +108,13 @@
                         <div class="dog-details-row">
                             <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
                             <div class="details-txt">  
-                                <?php 
+                                <?php
                                 $address = new EasyGoogleMap();
                                 $address_detail = $address->getCurrentPosition($lost_pet['lost_address']);
                                 echo $address_detail['city'] . ',' . $address_detail['country']
                                 ?>
-                               <br/>
-                                <?php 
+                                <br/>
+                                <?php
                                 echo date("H:i", strtotime($lost_pet['date_of_missing'])) . ' ' . date("d.M Y", strtotime($lost_pet['date_of_missing']));
                                 ?>
                             </div>               

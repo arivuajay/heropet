@@ -15,7 +15,7 @@ return array(
         'application.components.*',
     ),
     'modules' => array(
-        'admin','cms','site',
+        'admin', 'cms', 'site',
         // uncomment the following to enable the Gii tool
         'gii' => array(
             'class' => 'system.gii.GiiModule',
@@ -64,8 +64,13 @@ return array(
                 ),
             ),
         ),
-        
-
+        'geoip' => array(
+            'class' => 'application.extensions.geoip.CGeoIP',
+            // specify filename location for the corresponding database
+            'filename' => dirname(__FILE__) . '/dat/GeoLiteCity.dat',
+            // Choose MEMORY_CACHE or STANDARD mode
+            'mode' => 'STANDARD',
+        ),
     ),
     // application-level parameters that can be accessed
     //setting the basic language value

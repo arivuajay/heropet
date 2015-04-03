@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <?php echo $form->labelEx($model, 'currentpassword', array("class" => "col-md-3 control-label")); ?>
                                 <div class="col-md-6">
-                                    <?php echo $form->textField($model, 'currentpassword', array('class' => 'form-control')); ?>
+                                    <?php echo $form->passwordField($model, 'currentpassword', array('class' => 'form-control')); ?>
                                     <?php echo $form->error($model, 'currentpassword'); ?>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                             <div class="form-group">
                                 <?php echo $form->labelEx($model, 'sitenew_password', array("class" => "col-md-3 control-label")); ?>
                                 <div class="col-md-6">
-                                    <?php echo $form->textField($model, 'sitenew_password', array('class' => 'form-control')); ?>
+                                    <?php echo $form->passwordField($model, 'sitenew_password', array('class' => 'form-control')); ?>
                                     <?php echo $form->error($model, 'sitenew_password'); ?>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <?php echo $form->labelEx($model, 'siteconfirm_password', array("class" => "col-md-3 control-label")); ?>
                                 <div class="col-md-6">
-                                    <?php echo $form->textField($model, 'siteconfirm_password', array('class' => 'form-control')); ?>
+                                    <?php echo $form->passwordField($model, 'siteconfirm_password', array('class' => 'form-control')); ?>
                                     <?php echo $form->error($model, 'siteconfirm_password'); ?>
                                 </div>
                             </div>
