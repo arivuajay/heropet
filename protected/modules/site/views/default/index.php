@@ -1,9 +1,12 @@
 <div class="slider-container">
     <?php
     $egmap = new EasyGoogleMap();
+    
     if (!empty($lost_pets))
-        $egmap->getPetsMap($lost_pets);
-    ?>
+        $egmap->getHomePageMap($lost_pets);
+    else
+        $egmap->getMapByLatLng($_COOKIE['hpet_geo_lat'], $_COOKIE['hpet_geo_lng']);
+        ?>
 </div>
 
 <div class="home-intro" id="home-intro">
@@ -30,39 +33,43 @@
 
 <div class="filter-cont"> 
     <div class="container"> 
-        <form class="jqtransform">
-            <div class="row"> 
-                <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
-                    <?php echo CHtml::image("{$this->themeUrl}/img/map-icon.png") ?>
-                    <input name="" type="text" class="map-field" id="searchTextField" autocomplete="on" placeholder="PLZ oder Ort eingeben"> 
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
-                    <?php echo CHtml::image("{$this->themeUrl}/img/filter-icon.png") ?>
-                    <label>With in :</label>
-                    <select name="select">
-                        <option value="">500 Km</option>
-                        <option value="opt1">200 Km</option>
-                    </select>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
-
-                    <label>Species :</label>
-                    <select name="select">
-                        <option value="">Dog</option>
-                        <option value="opt1">cat</option>
-                    </select>
-
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">
-                    <label>Breed :</label>
-                    <select name="select">
-                        <option value=""> Dobermann</option>
-                    </select>
-                </div>
+        <?php
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'user-form',
+            'method' => 'get',
+            'action' => Yii::app()->createUrl('site/default/index'),
+            'htmlOptions' => array(
+                'class' => 'jqtransform'
+            ),
+        ));
+        ?>
+        <div class="row"> 
+            <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
+                <?php echo CHtml::image("{$this->themeUrl}/img/map-icon.png") ?>
+                <input name="place" type="text" class="map-field" id="searchTextField" autocomplete="on" placeholder="PLZ oder Ort eingeben" value="<?php echo $search_place; ?>"> 
             </div>
-        </form>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
+                <?php echo CHtml::image("{$this->themeUrl}/img/filter-icon.png") ?>
+                <label>With in :</label>
+                <?php echo CHtml::dropDownList('distance', $search_distance, array('500' => '500 Km', '200' => '200 Km')); ?>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">  
+                <label>Species :</label>
+                <?php echo CHtml::dropDownList('category', $search_category, $list_category); ?>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 search-fileds">
+                <label>Breed :</label>
+                <select name="breed">
+                    <option value="Dobermann"> Dobermann</option>
+                </select>
+                <span class="input-group-btn pull-left">
+                    <button type="submit" class="btn btn-default">Go!</button>
+                </span>
+            </div>
+        </div>
+        <?php $this->endWidget(); ?>
     </div>
 </div>
 
@@ -123,10 +130,12 @@
                     </div>
                 </div>
 
-                <?php
-            }
-        }
-        ?>
-        <div class="viewmore"> <a href="#">View more results </a></div>
+            <?php } ?>
+            <div class="viewmore"> <a href="#">View more results </a></div>
+        <?php } else { ?>
+            <div class="col-xs-12 col-sm-6 col-md-3"> 
+                No Lost Pets Found
+            </div>
+        <?php } ?>
     </div>
 </div>

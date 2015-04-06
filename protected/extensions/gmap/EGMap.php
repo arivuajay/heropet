@@ -483,7 +483,7 @@ class EGMap extends EGMapBase {
 	public function registerMapScript($afterInit=array(), $language = null, $region = null, $position = CClientScript::POS_LOAD)
 	{
 		// TODO: include support in the future
-		$params = 'sensor=false';
+		$params = 'sensor=false&amp;libraries=places';
 
 		if ($language !== null)
 			$params .= '&language=' . $language;

@@ -192,9 +192,14 @@ class Lost extends CActiveRecord {
         return parent::beforeSave();
     }
 
-    public function getLostPetsByDistance($lat, $lng, $distance = '< 10') {
-        //If you want search distance in kms, use 6371 in below query.
-        //If you want search distance in miles, use 3959 in below query.
+    public function getLostPets($lat, $lng, $symbol, $distance, $category = '', $breed = '') {
+        $query = $this->LostPetsQueryBuilder($lat, $lng, $symbol, $distance, $category, $breed);
+        $command = Yii::app()->db->createCommand($query);
+        $results = $command->queryAll();
+        return $results;
+    }
+
+    protected function LostPetsQueryBuilder($lat, $lng, $symbol, $distance, $category = '', $breed = '') {
         $sql = "SELECT *, 
                 ( 6371 * acos( cos( radians({$lat}) ) 
                                * cos( radians( latitude ) ) 
@@ -204,19 +209,27 @@ class Lost extends CActiveRecord {
                                * sin( radians( latitude ) ) 
                              )
                ) AS distance 
-            FROM pet_lost 
-            HAVING distance {$distance}
-            ORDER BY distance LIMIT 0 , 4;";
-        $command = Yii::app()->db->createCommand($sql);
-        $results = $command->queryAll();
-        return $results;
-    }
-    
-    public function getLostPets(){
-        $sql = "SELECT * FROM pet_lost LIMIT 0 , 4;";
-        $command = Yii::app()->db->createCommand($sql);
-        $results = $command->queryAll();
-        return $results;
+            FROM pet_lost";
+
+        if ($category || $breed) {
+            $sql .= " WHERE";
+        }
+
+        if ($category) {
+            $sql .= " pet_category_id = {$category}";
+        }
+
+        if ($category && $breed) {
+            $sql .= " AND";
+        }
+
+        if ($breed) {
+            $sql .= " pet_breed_id = {$breed}";
+        }
+
+        $sql .= " HAVING distance {$symbol} {$distance} ORDER BY distance";
+
+        return $sql;
     }
 
 }

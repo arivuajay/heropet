@@ -57,5 +57,37 @@ class Myclass extends CController {
             unset(Yii::app()->request->cookies['wipo_admin_username']);
         }
     }
-    
+
+    public static function defaultDistance() {
+        $default_distance = array(
+            array(
+                'symbol' => '<',
+                'distance' => '10',
+                'msg' => '10KM'
+            ),
+            array(
+                'symbol' => '<',
+                'distance' => '20',
+                'msg' => '20KM'
+            ),
+            array(
+                'symbol' => '<',
+                'distance' => '50',
+                'msg' => '50KM'
+            ),
+            array(
+                'symbol' => '<',
+                'distance' => '50',
+                'msg' => '50KM'
+            ),
+            array(
+                'symbol' => '>',
+                'distance' => '50',
+                'msg' => 'Auto'
+            ),
+        );
+        
+        return $default_distance;
+    }
+
 }
