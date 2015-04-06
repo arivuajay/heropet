@@ -71,6 +71,7 @@ class User extends CActiveRecord {
         return array(
             'roleMdl' => array(self::BELONGS_TO, 'MasterRole', 'role'),
             'userProfiles' => array(self::HAS_MANY, 'UserProfile', 'pet_user_id'),
+             'petUserdetail' => array(self::BELONGS_TO, 'UserProfile', ''),
         );
     }
 

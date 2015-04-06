@@ -45,6 +45,8 @@ class Category extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'breeds' => array(self::HAS_MANY, 'Breed', 'pet_category_id'),
+            'losts' => array(self::HAS_MANY, 'Lost', 'pet_category_id'),
         );
     }
 

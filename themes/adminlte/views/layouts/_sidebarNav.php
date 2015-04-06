@@ -41,6 +41,8 @@
                     ),
                 ),
                 array('label' => '<i class="fa fa-cog"></i> <span>Pet Category</span>', 'url' => array('/admin/category/index')),
+                array('label' => '<i class="fa fa-user"></i> <span>Lost Pets</span>', 'url' => array('/admin/lostpet/index')),
+                array('label' => '<i class="fa fa-user"></i> <span>Pet Breed</span>', 'url' => array('/admin/breed/index')),
             ),
             'htmlOptions' => array('class' => 'sidebar-menu')
         ));
