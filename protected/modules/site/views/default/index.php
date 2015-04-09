@@ -110,7 +110,7 @@
                         </div>
                         <div class="dog-details-row">
                             <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/phone.png", '') ?></div>
-                            <div class="details-txt"><?php echo $lost_pet_user_profile->user_phone; ?></div>                        
+                            <div class="details-txt"><?php //echo $lost_pet_user_profile->user_phone; ?></div>                        
                         </div>
                         <div class="dog-details-row">
                             <div class="details-icon"><?php echo CHtml::image("{$this->themeUrl}/img/map-icon2.png", '') ?></div>
