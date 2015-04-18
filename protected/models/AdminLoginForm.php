@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * AdminLoginForm class.
+ * AdminLoginForm is the data structure for keeping
+ * Admin login form data. It is used by the 'login' action of 'DefaultController'.
+ */
+class AdminLoginForm extends CFormModel {
+
+    public $email;
+    public $username;
+    public $password;
+    public $rememberMe = 0;
+    
+    private $_identity;
+
+    /**
+     * Declares the validation rules.
+     * The rules state that email and password are required,
+     * and password needs to be authenticated.
+     */
+    public function rules() {
+        return array(
+            // email and password are required
+            array('email, password', 'required'),
+            array('email', 'required', 'on' => 'forgotpassword'),
+            array('email', 'email'),
+            // rememberMe needs to be a boolean
+            array('rememberMe', 'boolean'),
+            // password needs to be authenticated
+            array('password', 'authenticate'),
+        );
+    }
+
+    /**
+     * Declares attribute labels.
+     */
+    public function attributeLabels() {
+        return array(
+            'email' => Yii::t('admin', 'Email'),
+            'password' => Yii::t('admin', 'Password'),
+            'rememberMe' => Yii::t('admin', 'Remember me'),
+        );
+    }
+
+    /**
+     * Authenticates the password.
+     * This is the 'authenticate' validator as declared in rules().
+     */
+    public function authenticate($attribute, $params) {
+
+        if (!$this->hasErrors()):
+            $this->_identity = new AdminIdentity($this->username, $this->password, $this->email);
+            if (!$this->_identity->authenticate()):
+                if ($this->_identity->errorCode)
+                    $this->addError('password', Myclass::t('Incorrect Email or Password. Please try again.'));
+            endif;
+        endif;
+    }
+
+    /**
+     * Logs in the Admin using the given email and password in the model.
+     * @return boolean whether login is successful
+     */
+    public function login() {
+
+        if ($this->_identity === null):
+            $this->_identity = new AdminIdentity($this->username, $this->password, $this->email);
+            $this->_identity->authenticate();
+        endif;
+        if ($this->_identity->errorCode === AdminIdentity::ERROR_NONE):
+            //$duration= 3600*24*30; // 30 days
+            $duration = $this->rememberMe ? 3600 * 24 * 30 : 0; // 30 days
+            Yii::app()->user->login($this->_identity, $duration);
+            MyClass::rememberMeAdmin($this->email, $this->rememberMe);
+            return true;
+        else:
+
+        endif;
+    }
+
+}
