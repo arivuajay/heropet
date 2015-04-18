@@ -16,6 +16,9 @@ class Controller extends CController {
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
      */
     public $menu = array();
+    protected $adminHomeUrl = array('/admin/default/index');
+    protected $userHomeUrl = array('/site/default/index');
+    protected $siteHomeUrl = array('/');
 
     /**
      * @var array the breadcrumbs of the current page. The value of this property will
@@ -26,9 +29,30 @@ class Controller extends CController {
     public $flashMessages = array();
     public $themeUrl = '';
     public $title = '';
-    
+
     public function init() {
+        $this->flashMessages = Yii::app()->user->getFlashes();
         $this->themeUrl = Yii::app()->theme->baseUrl;
+    }
+
+    public function goAdminHome() {
+        $this->redirect($this->adminHomeUrl);
+    }
+
+    public function goUserHome() {
+        $this->redirect($this->userHomeUrl);
+    }
+    
+    public function goSiteHome(){
+        $this->redirect($this->siteHomeUrl);
+    }
+
+    public function allowAdminRole() {
+        if (isset(Yii::app()->user->role) && in_array(Yii::app()->user->role, array('admin'))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
