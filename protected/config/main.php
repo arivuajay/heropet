@@ -15,11 +15,12 @@ return array(
         'application.components.*',
     ),
     'modules' => array(
-        'site',
+        'site','admin',
         // uncomment the following to enable the Gii tool
         'gii' => array(
             'class' => 'system.gii.GiiModule',
             'password' => 'heropet',
+            'generatorPaths' => array('application.gii'),
             // If removed, Gii defaults to localhost only. Edit carefully to taste.
             'ipFilters' => array('127.0.0.1', '::1'),
         ),
@@ -33,6 +34,10 @@ return array(
                     'js' => array('jquery-1.10.1.min.js', 'jquery-migrate-1.2.1.min.js'),
                 ),
             )
+        ),
+        'booster' => array(
+            'class' => 'application.extensions.yiibooster.components.Booster',
+            'yiiCss' => false
         ),
         'user' => array(
             // enable cookie-based authentication
@@ -58,12 +63,6 @@ return array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'error, warning',
                 ),
-            // uncomment the following to show log messages on web pages
-            /*
-              array(
-              'class'=>'CWebLogRoute',
-              ),
-             */
             ),
         ),
     ),
