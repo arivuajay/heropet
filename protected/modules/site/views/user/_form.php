@@ -21,13 +21,12 @@
                                     'class' => 'form-horizontal form-bordered'
                                 ),
                                 'clientOptions' => array(
-                                    'validateOnSubmit' => true,
+                                    'validateOnSubmit' => false,
                                 ),
-                                'enableAjaxValidation' => true,
+                                'enableAjaxValidation' => false,
                             ));
 
                             $user_title = array('Mr' => 'Mr', 'Ms' => 'Ms');
-                            $countries_list = CHtml::listData(Country::model()->findAll(), 'country_id', 'country_name');
                             ?>
 
                             <div class="form-group">
@@ -81,59 +80,51 @@
                             </div>
 
                             <div class="form-group">
-                                <?php echo $form->labelEx($user_profile, 'user_zip_code', array("class" => "col-sm-3 col-md-2 control-label")); ?>
+                                <label class="col-sm-3 col-md-2 control-label">Zip Code / Town</label>
                                 <div class="col-sm-6 col-md-6">
-                                    <?php echo $form->textField($user_profile, 'user_zip_code', array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($user_profile, 'user_zip_code'); ?>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6">
+                                            <?php echo $form->textField($user_profile, 'user_zip_code', array('class' => 'form-control')); ?>
+                                            <?php echo $form->error($user_profile, 'user_zip_code'); ?>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <?php echo $form->textField($user_profile, 'user_town', array('class' => 'form-control')); ?>
+                                            <?php echo $form->error($user_profile, 'user_town'); ?>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <?php echo $form->labelEx($user_profile, 'user_town', array("class" => "col-sm-3 col-md-2 control-label")); ?>
+                                <label class="col-sm-3 col-md-2 control-label">Street / House Number</label>
                                 <div class="col-sm-6 col-md-6">
-                                    <?php echo $form->textField($user_profile, 'user_town', array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($user_profile, 'user_town'); ?>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <?php echo $form->labelEx($user_profile, 'user_street', array("class" => "col-sm-3 col-md-2 control-label")); ?>
-                                <div class="col-sm-6 col-md-6">
-                                    <?php echo $form->textField($user_profile, 'user_street', array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($user_profile, 'user_street'); ?>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <?php echo $form->labelEx($user_profile, 'user_house_number', array("class" => "col-sm-3 col-md-2 control-label")); ?>
-                                <div class="col-sm-6 col-md-6">
-                                    <?php echo $form->textField($user_profile, 'user_house_number', array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($user_profile, 'user_house_number'); ?>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6">
+                                            <?php echo $form->textField($user_profile, 'user_street', array('class' => 'form-control')); ?>
+                                            <?php echo $form->error($user_profile, 'user_street'); ?>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <?php echo $form->textField($user_profile, 'user_house_number', array('class' => 'form-control')); ?>
+                                            <?php echo $form->error($user_profile, 'user_house_number'); ?>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <?php echo $form->labelEx($user_profile, 'user_mobile_number', array("class" => "col-sm-3 col-md-2 control-label")); ?>
                                 <div class="col-sm-6 col-md-6">
-                                    <?php echo $form->textField($user_profile, 'user_mobile_number', array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($user_profile, 'user_mobile_number'); ?>
-                                </div>
-                            </div>
-
-<!--                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Price: </label>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <input class="form-control" name="Price" value="" type="text">
-                                        <select class="selectpicker" id="currency" name="currency">
-                                            <option>option1</option>
-                                            <option>option2</option>
-                                            <option>option3</option>
-                                            <option>option4</option>
-                                        </select>
+                                    <div class="row">
+                                        <div class="col-sm-5 col-md-5">
+                                            <?php echo $form->dropDownList($user_profile, 'user_mobile_dialing_code', $country_dialing_code, array('class' => 'selectpicker')); ?>
+                                        </div>
+                                        <div class="col-sm-7 col-md-7">
+                                            <?php echo $form->textField($user_profile, 'user_mobile_number', array('class' => 'form-control')); ?>
+                                            <?php echo $form->error($user_profile, 'user_mobile_number'); ?>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
 
                             <div class="form-group">
                                 <?php echo $form->labelEx($model, 'user_email', array("class" => "col-sm-3 col-md-2 control-label")); ?>

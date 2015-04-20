@@ -9,4 +9,12 @@ $this->breadcrumbs = array(
 );
 ?>
 
-<?php $this->renderPartial('_form', array('model' => $model, 'user_profile' => $user_profile)); ?>
+<?php
+
+$this->renderPartial('_form', array(
+    'model' => $model,
+    'user_profile' => $user_profile,
+    'countries_list' => $countries_list,
+    'country_dialing_code' => $country_dialing_code,
+));
+?>

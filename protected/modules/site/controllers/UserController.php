@@ -61,11 +61,11 @@ class UserController extends Controller {
         if (isset($_POST['User'], $_POST['UserProfile'])) {
             $model->attributes = $_POST['User'];
             $user_profile->attributes = $_POST['UserProfile'];
+            
+            $model->user_status = 1;
 
             $user_profile->latitude = '1.123456';
             $user_profile->longitude = '-123.123456';
-
-            $model->user_status = 1;
 
             // validate BOTH $model and $user_profile
             $valid = $model->validate();
@@ -77,8 +77,8 @@ class UserController extends Controller {
 
                 if ($model->save(false)) {
                     $user_profile->pet_user_id = $model->user_id;
-
-                    $user_profile->save();
+                    
+                    $user_profile->save(false);
 
                     if (!empty($model->user_email)):
                         $mail = new Sendmail();
@@ -101,16 +101,26 @@ class UserController extends Controller {
             }
         }
 
+        $countries = Country::model()->findAll();
+        $countries_list = CHtml::listData($countries, 'country_id', 'country_name');
+        
+        $country_dialing_code = array();
+        foreach($countries as $country_id => $country_values){
+            $country_dialing_code[$country_values['country_code']." ".$country_values['country_dialing_code']] = $country_values['country_code']." ".$country_values['country_dialing_code'];
+        }
+
         $this->render('register', array(
             'model' => $model,
-            'user_profile' => $user_profile
+            'user_profile' => $user_profile,
+            'countries_list' => $countries_list,
+            'country_dialing_code' => $country_dialing_code
         ));
     }
 
     public function actionLogin() {
         if (!Yii::app()->user->isGuest)
             $this->goUserHome();
-        
+
         $model = new LoginForm();
         $this->performAjaxValidation($model);
 
@@ -125,8 +135,8 @@ class UserController extends Controller {
             'model' => $model
         ));
     }
-    
-    public function actionProfile(){
+
+    public function actionProfile() {
         $this->render('profile');
     }
 
@@ -140,7 +150,6 @@ class UserController extends Controller {
         $this->redirect(array('/site/user/login'));
     }
 
-    
     public function actionSocialLoginProvider($provider) {
         try {
             Yii::import('application.components.HybridAuthIdentity');
@@ -168,8 +177,6 @@ class UserController extends Controller {
         $path = Yii::getPathOfAlias('ext.HybridAuth');
         require_once $path . '/hybridauth-' . HybridAuthIdentity::VERSION . '/hybridauth/index.php';
     }
-    
-    
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

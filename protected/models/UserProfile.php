@@ -15,6 +15,7 @@
  * @property string $user_town
  * @property string $user_street
  * @property string $user_house_number
+ * @property string $user_mobile_dialing_code
  * @property string $user_mobile_number
  * @property string $user_is_agree_tc
  * @property string $user_voucher_code
@@ -45,14 +46,14 @@ class UserProfile extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('user_title, user_first_name, pet_country_id, user_zip_code, user_town, latitude, longitude, verifyCode', 'required', 'on' => 'register'),
+            array('user_title, user_first_name, pet_country_id, user_zip_code, user_town, user_mobile_dialing_code, user_mobile_number, latitude, longitude, verifyCode', 'required', 'on' => 'register'),
             array('user_is_agree_tc', 'required', 'requiredValue' => 1, 'message' => 'You should accept the Terms and Conditions'),
             array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements()),
             
             array('user_title, user_first_name', 'required', 'on' => 'social_register'),
             array('pet_user_id, pet_country_id', 'numerical', 'integerOnly' => true),
             array('latitude, longitude', 'numerical'),
-            array('user_title', 'length', 'max' => 10),
+            array('user_title, user_mobile_dialing_code', 'length', 'max' => 10),
             array('user_first_name, user_sur_name, user_town, user_mobile_number', 'length', 'max' => 255),
             array('user_zip_code, user_street, user_voucher_code', 'length', 'max' => 100),
             array('user_house_number', 'length', 'max' => 50),
@@ -60,7 +61,7 @@ class UserProfile extends CActiveRecord {
             array('user_profile_picture, created, updated', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('user_profile_id, pet_user_id, user_profile_picture, user_title, user_first_name, user_sur_name, pet_country_id, user_zip_code, user_town, user_street, user_house_number, user_mobile_number, user_is_agree_tc, user_voucher_code, latitude, longitude, created, updated', 'safe', 'on' => 'search'),
+            array('user_profile_id, pet_user_id, user_profile_picture, user_title, user_first_name, user_sur_name, pet_country_id, user_zip_code, user_town, user_street, user_house_number, user_mobile_dialing_code, user_mobile_number, user_is_agree_tc, user_voucher_code, latitude, longitude, created, updated', 'safe', 'on' => 'search'),
         );
     }
 
@@ -87,11 +88,12 @@ class UserProfile extends CActiveRecord {
             'user_title' => 'Title',
             'user_first_name' => 'First Name',
             'user_sur_name' => 'Sur Name',
-            'pet_country_id' => 'Pet Country',
+            'pet_country_id' => 'Country',
             'user_zip_code' => 'Zip Code',
             'user_town' => 'Town',
             'user_street' => 'Street',
             'user_house_number' => 'House Number',
+            'user_mobile_dialing_code' => 'Mobile Dialing Code',
             'user_mobile_number' => 'Mobile Number',
             'user_is_agree_tc' => 'Is Agree Tc',
             'user_voucher_code' => 'Voucher Code',
@@ -130,6 +132,7 @@ class UserProfile extends CActiveRecord {
         $criteria->compare('user_town', $this->user_town, true);
         $criteria->compare('user_street', $this->user_street, true);
         $criteria->compare('user_house_number', $this->user_house_number, true);
+        $criteria->compare('user_mobile_dialing_code',$this->user_mobile_dialing_code,true);
         $criteria->compare('user_mobile_number', $this->user_mobile_number, true);
         $criteria->compare('user_is_agree_tc', $this->user_is_agree_tc, true);
         $criteria->compare('user_voucher_code', $this->user_voucher_code, true);

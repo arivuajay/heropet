@@ -18,7 +18,7 @@
  * @property UserProfile[] $userProfiles
  */
 class User extends CActiveRecord {
-    
+
     public $user_repeat_email;
     public $user_repeat_password;
 
@@ -36,15 +36,16 @@ class User extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('user_email, user_repeat_email, user_password, user_repeat_password', 'required', 'on'=>'register'),
+            array('user_email, user_repeat_email, user_password, user_repeat_password', 'required', 'on' => 'register'),
+            array('user_email', 'email'),
+            array('user_email', 'unique', 'message' => 'This Email is already in use', 'on' => 'register'),
+            array('user_repeat_email', 'compare', 'compareAttribute' => 'user_email', 'message' => "Email don't match", 'on' => 'register'),
+            array('user_repeat_password', 'compare', 'compareAttribute' => 'user_password', 'message' => "Passwords don't match", 'on' => 'register'),
+            array('user_email, user_password', 'required', 'on' => 'social_register'),
+            
             array('user_email, user_password, user_login_ip', 'length', 'max' => 255),
             array('user_status', 'length', 'max' => 1),
             array('reset_password_string', 'length', 'max' => 50),
-            
-            array('user_repeat_email', 'compare', 'compareAttribute'=>'user_email', 'message'=>"Email don't match", 'on'=>'register'),
-            array('user_repeat_password', 'compare', 'compareAttribute'=>'user_password', 'message'=>"Passwords don't match", 'on'=>'register'),
-            
-            array('user_email, user_password', 'required', 'on' => 'social_register'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('user_id, user_email, user_password, user_status, user_last_login, user_login_ip, reset_password_string, created, updated', 'safe', 'on' => 'search'),
@@ -130,8 +131,8 @@ class User extends CActiveRecord {
             )
         ));
     }
-    
-     public function beforeSave() {
+
+    public function beforeSave() {
         if ($this->isNewRecord)
             $this->created = date('Y-m-d H:i:s');
 

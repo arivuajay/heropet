@@ -16,6 +16,7 @@
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">
 
         <?php
+        $cs->registerCssFile($themeUrl . '/css/bootstrap-select.css');
         $cs->registerCssFile($themeUrl . '/vendor/bootstrap/bootstrap.css');
         $cs->registerCssFile($themeUrl . '/vendor/fontawesome/css/font-awesome.css');
         $cs->registerCssFile($themeUrl . '/css/theme.css');
@@ -61,6 +62,7 @@
 
         $cs->registerCoreScript('jquery');
 
+        $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/jquery.cookie.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/vendor/bootstrap/bootstrap.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/vendor/common/common.js', $cs_pos_end);
