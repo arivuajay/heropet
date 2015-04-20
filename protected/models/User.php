@@ -68,14 +68,16 @@ class User extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'user_id' => 'User',
-            'user_email' => 'User Email',
-            'user_password' => 'User Password',
-            'user_status' => 'User Status',
-            'user_last_login' => 'User Last Login',
-            'user_login_ip' => 'User Login Ip',
+            'user_email' => 'Email',
+            'user_password' => 'Password',
+            'user_status' => 'Status',
+            'user_last_login' => 'Last Login',
+            'user_login_ip' => 'Login Ip',
             'reset_password_string' => 'Reset Password String',
             'created' => 'Created',
             'updated' => 'Updated',
+            'user_repeat_email' => 'Repeat Email',
+            'user_repeat_password' => 'Repeat Password',
         );
     }
 

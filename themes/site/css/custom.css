@@ -1,1 +1,19 @@
-/* Add here all your CSS customizations */
+.form-horizontal .control-label {
+        text-align: left;
+    }
+
+    .form-group{
+        margin-bottom: 40px;
+    }
+
+    .label-primary{
+        color: #FFFFFF;
+    }
+    
+    .label-danger{
+        color: #FFFFFF;
+    }
+    
+    .errorMessage{
+        color: #ff0033;
+    }

@@ -62,9 +62,8 @@
                 <div class="col-md-4">
                     <nav id="sub-menu">
                         <ul>
-                            <li><a href="#">FAQ's</a></li>
-                            <li><a href="#">Sitemap</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><?php echo CHtml::link('Register', array('/site/user/register')); ?></li>
+                            <li><?php echo CHtml::link('Login', array('/site/user/login')); ?></li>
                         </ul>
                     </nav>
                 </div>

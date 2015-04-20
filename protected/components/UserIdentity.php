@@ -37,7 +37,7 @@ class UserIdentity extends CUserIdentity {
         if ($user === null):
             $this->errorCode = self::ERROR_EMAIL_INVALID;
 
-        elseif ($user->status == 0):
+        elseif ($user->user_status == 0):
             $this->errorCode = self::ERROR_ACCOUNT_BLOCKED;
         else:
             $is_correct_password = ($user->user_password !== Myclass::encrypt($this->password)) ? false : true;

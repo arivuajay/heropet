@@ -5,19 +5,19 @@ class HybridAuthIdentity extends CUserIdentity {
     const VERSION = '2.4.1';
 
     /**
-     * 
+     *
      * @var Hybrid_Auth
      */
     public $hybridAuth;
 
     /**
-     * 
+     *
      * @var Hybrid_Provider_Adapter
      */
     public $adapter;
 
     /**
-     * 
+     *
      * @var Hybrid_User_Profile
      */
     public $userProfile;
@@ -35,8 +35,8 @@ class HybridAuthIdentity extends CUserIdentity {
                 "Google" => array(
                     "enabled" => true,
                     "keys" => array(
-                        "id" => "381840716643-b9f1b18lm8vsuep8gcdccahi1gseal1o.apps.googleusercontent.com",
-                        "secret" => "n9s-GYh7yTpWg9qb_8niqkkL",
+                        "id" => GOOGLE_APP_ID,
+                        "secret" => GOOGLE_SEC_ID,
                     ),
                     "scope" => "https://www.googleapis.com/auth/userinfo.profile " . "https://www.googleapis.com/auth/userinfo.email",
                     "access_type" => "online",
@@ -44,8 +44,8 @@ class HybridAuthIdentity extends CUserIdentity {
                 "Facebook" => array(
                     "enabled" => true,
                     "keys" => array(
-                        "id" => "809335985824213",
-                        "secret" => "555f113549dcbb1faf4c0d80dc361969",
+                        "id" => FB_APP_ID,
+                        "secret" => FB_SEC_ID,
                     ),
                     "scope" => "email"
                 ),
@@ -73,7 +73,7 @@ class HybridAuthIdentity extends CUserIdentity {
                 ),
             ),
             "debug_mode" => false,
-            // to enable logging, set 'debug_mode' to true, then provide here a path of a writable file 
+            // to enable logging, set 'debug_mode' to true, then provide here a path of a writable file
             "debug_file" => "",
         );
 
@@ -83,7 +83,7 @@ class HybridAuthIdentity extends CUserIdentity {
     /**
      *
      * @param string $provider
-     * @return bool 
+     * @return bool
      */
     public function validateProviderName($provider) {
         if (!is_string($provider))
@@ -117,6 +117,7 @@ class HybridAuthIdentity extends CUserIdentity {
             $password = Myclass::getRandomString('8');
             $model->user_password = Myclass::encrypt($password);
             $model->user_status = 1;
+            $model->user_last_login = date('Y-m-d h:i:s');
         else:
             $model->user_status = 1;
             $model->user_last_login = date('Y-m-d h:i:s');

@@ -5,7 +5,17 @@
             ?>
         </div>
         <div class="search">
-            Language
+            <div id="polyglotLanguageSwitcher">
+                <form action="#">
+                    <select id="polyglot-language-options">
+                        <option id="en" value="en" selected>&nbsp;</option>
+                        <option id="fr" value="fr">&nbsp;</option>
+                        <option id="de" value="de">&nbsp;</option>
+                        <option id="it" value="it">&nbsp;</option>
+                        <option id="es" value="es">&nbsp;</option>
+                    </select>
+                </form>
+            </div>
         </div>
         <button class="btn btn-responsive-nav btn-inverse" data-toggle="collapse" data-target=".nav-main-collapse">
             <i class="fa fa-bars"></i>

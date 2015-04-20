@@ -21,8 +21,10 @@
         $cs->registerCssFile($themeUrl . '/css/theme.css');
         $cs->registerCssFile($themeUrl . '/css/theme-elements.css');
         $cs->registerCssFile($themeUrl . '/css/skins/default.css');
+        $cs->registerCssFile($themeUrl . '/css/polyglot-language-switcher.css');
+        $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
-
+        
         <!--[if IE]>
             <link rel="stylesheet" href="<?php echo $themeUrl; ?>/css/ie.css">
         <![endif]-->
@@ -68,6 +70,7 @@
 
         $cs->registerCssFile($themeUrl . '/jqtransform.css');
         $cs->registerScriptFile($themeUrl . '/jquery.jqtransform.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/jquery.polyglot.language.switcher.js', $cs_pos_end);
 
         $cs->registerScript('jqtransform-script', <<<EOD
             $(function() {
@@ -82,6 +85,19 @@
 EOD
         );
         ?>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#polyglotLanguageSwitcher').polyglotLanguageSwitcher({
+                    effect: 'fade',
+                    testMode: true,
+                    onChange: function(evt) {
+                        alert("The selected language is: " + evt.selectedItem);
+                    }
+
+                });
+            });
+        </script>
 
         <?php
 //        $cs->registerScriptFile($themeUrl . '/vendor/jquery/jquery.js', $cs_pos_end);
